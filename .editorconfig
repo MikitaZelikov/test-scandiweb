@@ -1,0 +1,11 @@
+# Файл EditorConfig верхнего уровня
+root = true
+
+# Переводы строк в стиле Unix с пустой строкой в конце файла
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true

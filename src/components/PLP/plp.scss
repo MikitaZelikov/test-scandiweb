@@ -1,0 +1,56 @@
+.container {
+  padding: 5.5vw 7vw 0;
+
+  &__list {
+      display: grid;
+      grid-gap: 7vw 3vw;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 386px));
+      grid-template-rows: repeat(auto-fit, minmax(100px, 444px));
+  }
+}
+
+.product {
+  padding: 1em;
+
+  &__link {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: #1d1f22;
+  }
+
+  &__info {
+      padding-top: 1.5em;
+      position: relative;
+      font-size: 1.125rem;
+      line-height: 160%;
+
+      &--cart {
+          position: absolute;
+          border-radius: 50%;
+          width: 52px;
+          height: 52px;
+          overflow: hidden;
+          top: -26px;
+          right: 15px;
+
+          svg {
+              position: absolute;
+              top: -7px;
+              left: -11px;
+          }
+
+          &:hover svg g circle {
+              fill:#1d1f22;
+          }
+      }
+
+      &--name {
+          font-weight: 300;
+      }
+
+      &--price {
+          font-weight: 500;
+      }
+  }
+}

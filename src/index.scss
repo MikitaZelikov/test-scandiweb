@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Roboto&family=Roboto+Condensed:wght@700&family=Source+Sans+Pro&display=swap");
+@import "./normalize.scss";
+
+body {
+  margin: 0;
+  color: #1d1f22;
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+}
+
+h1 {
+  font-weight: 400;
+  font-size: 2.625rem;
+  line-height: 120%;
+  margin: 0 0 7vw;
+}
+
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  list-style-type: none;
+}

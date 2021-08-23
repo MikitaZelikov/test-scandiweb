@@ -1,0 +1,39 @@
+.header {
+  padding: 1.5em 7vw 0;
+  display: flex;
+  justify-content: space-between;
+
+  &__nav {
+      display: flex;
+      font-family: "Raleway", sans-serif;
+      font-weight: 400;
+  }
+
+  &__selection {
+      display: flex;
+      column-gap: 1.5em;
+  }
+
+  &__logo {
+      padding: 0.4em;
+  }
+}
+
+.header-nav__link {
+  padding: 0.25em 1em 2em;
+  text-decoration: none;
+  color: #1d1f22;
+
+  &:hover {
+      color: #5ece7b;
+      font-weight: 600;
+      border-bottom: solid 2px #5ece7b;
+      padding-bottom: calc(2em - 2px);
+  }
+}
+
+.header-selection__link {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1em;
+}
