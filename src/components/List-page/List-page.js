@@ -1,10 +1,22 @@
 import { Component } from 'react';
+import { connect } from 'react-redux';
 
-import './plp.scss';
+import './list-page.scss';
 import Header from '../Header/Header';
 import product from '../../assets/icons/Product.png';
+import { loadProducts } from '../../store/reducers/productsReducer';
 
-class PLP extends Component {
+class ListPage extends Component {
+  componentDidMount() {
+    const activeCategory = this.props.category;
+    this.props.getProducts(activeCategory);
+  }
+
+  componentDidUpdate() {
+    // eslint-disable-next-line no-console
+    console.log(this.props.products, this.props.categories);
+  }
+
   render() {
     return (
       <div>
@@ -13,7 +25,7 @@ class PLP extends Component {
           <h1>Category name</h1>
           <div className="container__list">
             <article className="product">
-              <a href="/description" className="product__link">
+              <article href="/description" className="product__link">
                 <img src={product} alt="product" className="product__img" />
                 <div className="product__info">
                   <a href="/" className="product__info--cart">
@@ -49,8 +61,8 @@ class PLP extends Component {
                       </g>
                       <defs>
                         <filter id="filter0_d" x="0" y="0" width="74" height="74"
-                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
                           <feColorMatrix in="SourceAlpha" type="matrix"
                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                           <feOffset dy="4" />
@@ -68,7 +80,7 @@ class PLP extends Component {
                   <p className="product__info--name">Apollo Running Short</p>
                   <p className="product__info--price">$50.00</p>
                 </div>
-              </a>
+              </article>
             </article>
 
           </div>
@@ -78,4 +90,16 @@ class PLP extends Component {
   }
 }
 
-export default PLP;
+const mapDispatchToProps = (dispatch) => ({
+  getProducts: (activeCategory) => dispatch(loadProducts(activeCategory)),
+});
+
+function mapStateToProps(state) {
+  return {
+    products: state.productsData.productsList,
+    category: state.productsData.activeCategory,
+    categories: state.productsData.allCategories,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListPage);

@@ -1,0 +1,13 @@
+.cart-container {
+  padding: 5em 17vw 0 7vw;
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.8em;
+  }
+
+  &__list {
+    padding: 0;
+  }
+}

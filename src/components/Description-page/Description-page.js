@@ -1,9 +1,9 @@
 import { Component } from 'react';
 
-import './pdp.scss';
+import './description-page.scss';
 import Header from '../Header/Header';
 
-class PDP extends Component {
+class DescriptionPage extends Component {
   render() {
     return (
       <div>
@@ -45,4 +45,4 @@ class PDP extends Component {
   }
 }
 
-export default PDP;
+export default DescriptionPage;
