@@ -1,17 +1,23 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { loadProducts } from '../../store/reducers/productsReducer';
+import { toggleCategory } from '../../store/reducers/productsReducer';
 import './category.scss';
 
 class Category extends Component {
-  handleClick = () => {
-
+  handleClick = (e) => {
+    e.preventDefault();
+    const activeCategory = e.target.textContent;
+    this.props.setActiveCategory(activeCategory);
   };
+
+  // componentDidUpdate() {
+
+  // }
 
   render() {
     return (
-      <a href="/" className="header-nav__link" onClick={this.handleClick}>
+      <a href="#" className="header-nav__link" onClick={this.handleClick}>
         {this.props.text.toUpperCase()}
       </a>
     );
@@ -19,7 +25,9 @@ class Category extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getProducts: (activeCategory) => dispatch(loadProducts(activeCategory)),
+  setActiveCategory: (activeCategory) => {
+    dispatch(toggleCategory(activeCategory));
+  },
 });
 
-export default connect(mapDispatchToProps)(Category);
+export default connect(null, mapDispatchToProps)(Category);

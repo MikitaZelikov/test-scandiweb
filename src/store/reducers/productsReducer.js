@@ -23,9 +23,12 @@ export const loadProducts = createAsyncThunk(
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
-  // reducers: {
-
-  // },
+  reducers: {
+    toggleCategory: (state, action) => {
+      const duplState = state;
+      duplState.activeCategory = action.payload.toLowerCase();
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadProducts.pending, (state) => {
@@ -42,4 +45,5 @@ export const productsSlice = createSlice({
   },
 });
 
+export const { toggleCategory } = productsSlice.actions;
 export default productsSlice.reducer;
