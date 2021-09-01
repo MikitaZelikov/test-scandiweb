@@ -16,19 +16,16 @@ export const loadProducts = createAsyncThunk(
   'products/getProducts',
   async (activeCategory) => {
     const data = await apiGraphql.findData(activeCategory);
-    return data;
+    return { data, activeCategory };
   },
 );
 
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {
-    toggleCategory: (state, action) => {
-      const duplState = state;
-      duplState.activeCategory = action.payload.toLowerCase();
-    },
-  },
+  // reducers: {
+
+  // },
   extraReducers: (builder) => {
     builder
       .addCase(loadProducts.pending, (state) => {
@@ -38,12 +35,13 @@ export const productsSlice = createSlice({
       .addCase(loadProducts.fulfilled, (state, action) => {
         const duplState = state;
         duplState.isLoading = false;
-        duplState.productsList = action.payload.data.category.products;
-        duplState.allCategories = action.payload.data.categories;
-        duplState.allCurrencies = action.payload.data.allCurrencies;
+        duplState.productsList = action.payload.data.data.category.products;
+        duplState.allCategories = action.payload.data.data.categories;
+        duplState.allCurrencies = action.payload.data.data.allCurrencies;
+        duplState.activeCategory = action.payload.activeCategory;
       });
   },
 });
 
-export const { toggleCategory } = productsSlice.actions;
+// export const { toggleCategory } = productsSlice.actions;
 export default productsSlice.reducer;

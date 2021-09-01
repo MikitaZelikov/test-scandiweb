@@ -1,48 +1,96 @@
 import { Component } from 'react';
+import { connect } from 'react-redux';
 
 import './description-page.scss';
 import Header from '../Header/Header';
 
 class DescriptionPage extends Component {
+  state = {
+    mainPhoto: '',
+  };
+
+  handleClickPhoto = (uri) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      mainPhoto: uri,
+    }));
+  };
+
   render() {
+    const refId = window.location.pathname.split('/').pop();
+    const { products, currency } = this.props;
+    const currentProduct = products.find((item) => item.id === refId);
+    const currentAmount = currentProduct.prices.find((item) => item.currency === currency).amount;
+    const attributesProduct = currentProduct.attributes;
+
     return (
       <div>
         <Header />
         <main className="description-container">
-          <ul id="product-gallery">
-            <li></li>
+          <ul className="product-gallery" id="product-gallery">
+            {
+              currentProduct.gallery.map((item, index) => (
+                <li
+                  key={index}
+                  className="product-gallery__photo"
+                  onClick={() => this.handleClickPhoto(item)}
+                >
+                  <img src={item} />
+                </li>
+              ))
+            }
           </ul>
-          <figure id="product-figure"></figure>
+          <figure className="product-figure" id="product-figure">
+            <img src={this.state.mainPhoto || currentProduct.gallery[0]} alt="main photo" />
+          </figure>
           <article className="product-description" id="product-description">
             <div className="product-description__heading">
-              <h1 className="product-description__heading--title">Apollo</h1>
-              <p className="product-description__heading--desc">Running Short</p>
+              <h1 className="product-description__heading--title">{currentProduct.brand}</h1>
+              <p className="product-description__heading--desc">{currentProduct.name}</p>
             </div>
-            <div className="product-description__size">
-              <p className="product-description__size--title">SIZE:</p>
-              <ul className="product-description__size--btns">
-                <li>XS</li>
-                <li>S</li>
-                <li>M</li>
-                <li>L</li>
-              </ul>
-            </div>
+            {
+              attributesProduct.map((attr, idx) => (
+                <div className="product-description__size">
+                  <p key={idx} className="product-description__size--title">
+                    {`${attr.name}:`}
+                  </p>
+                  <ul className="product-description__size--btns">
+                    {
+                      attr?.items.map((elem) => (
+                        <li style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}>
+                          {attr.type === 'swatch' ? '' : elem.value}
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              ))
+            }
             <div className="product-description__price">
               <p className="product-description__price--title">PRICE:</p>
-              <p className="product-description__price--amount">$50.00</p>
+              <p className="product-description__price--amount">{`${currentAmount} ${currency}`}</p>
             </div>
             <button className="product-description__add-btn">ADD TO CART</button>
-            <p className="product-description__overview">
-              Find stunning women's cocktail dresses and party dresses.
-              Stand out in lace and metallic cocktail dresses and party
-              dresses from all your favorite brands.
-            </p>
+            <p
+              className="product-description__overview"
+              dangerouslySetInnerHTML={{ __html: currentProduct.description }}
+            />
           </article>
         </main>
       </div>
-
     );
   }
 }
 
-export default DescriptionPage;
+// const mapDispatchToProps = (dispatch) => ({
+//   getProducts: (activeCategory) => dispatch(loadProducts(activeCategory)),
+// });
+
+function mapStateToProps(state) {
+  return {
+    products: state.productsData.productsList,
+    currency: state.productsData.activeCurrency,
+  };
+}
+
+export default connect(mapStateToProps)(DescriptionPage);

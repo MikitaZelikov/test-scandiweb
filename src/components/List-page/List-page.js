@@ -7,14 +7,15 @@ import Element from '../Element/Element';
 import { loadProducts } from '../../store/reducers/productsReducer';
 
 class ListPage extends Component {
+  activeCategory = this.props.category;
+
   componentDidMount() {
-    const activeCategory = this.props.category;
-    this.props.getProducts(activeCategory);
+    this.props.getProducts(this.activeCategory);
   }
 
   componentDidUpdate() {
     // eslint-disable-next-line no-console
-    console.log(this.props.products, this.props.categories, this.props.category);
+    console.log(this.props.category);
   }
 
   render() {
@@ -24,12 +25,13 @@ class ListPage extends Component {
       <div>
         <Header/>
         <section className="container">
-          <h1>Category name</h1>
+          <h1>{this.props.category.toUpperCase()}</h1>
           <div className="container__list">
             {
-              list.map((item, index) => (
+              list?.map((item, index) => (
               <Element
                 key={index}
+                id={item.id}
                 urlImg={item.gallery[0]}
                 name={item.name}
                 prices={item.prices}

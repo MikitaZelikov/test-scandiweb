@@ -1,33 +1,38 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { toggleCategory } from '../../store/reducers/productsReducer';
+import { loadProducts } from '../../store/reducers/productsReducer';
 import './category.scss';
 
 class Category extends Component {
   handleClick = (e) => {
     e.preventDefault();
-    const activeCategory = e.target.textContent;
-    this.props.setActiveCategory(activeCategory);
+    const selectCategory = e.target.textContent.toLowerCase();
+    this.props.getProducts(selectCategory);
   };
 
-  // componentDidUpdate() {
-
-  // }
-
   render() {
+    const { text, activeCategory } = this.props;
+    const categoryClass = 'header-nav__link';
+    const activeCategoryClass = 'header-nav__link header-nav__link--active';
+
     return (
-      <a href="#" className="header-nav__link" onClick={this.handleClick}>
-        {this.props.text.toUpperCase()}
+      <a href="#" className={activeCategory === text ? activeCategoryClass : categoryClass}
+        onClick={this.handleClick}>
+        {text.toUpperCase()}
       </a>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setActiveCategory: (activeCategory) => {
-    dispatch(toggleCategory(activeCategory));
-  },
+  getProducts: (selectCategory) => dispatch(loadProducts(selectCategory)),
 });
 
-export default connect(null, mapDispatchToProps)(Category);
+function mapStateToProps(state) {
+  return {
+    activeCategory: state.productsData.activeCategory,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);

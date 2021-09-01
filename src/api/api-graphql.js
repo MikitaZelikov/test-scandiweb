@@ -1,25 +1,32 @@
 export async function findData(activeCategory) {
   const graphqlQuery = {
     query: `query getProd($name: CategoryInput) {
-      currencies,
+      currencies
       categories {
-        name,
-      },
+        name
+      }
       category(input: $name) {
         products {
-          id,
-          name,
-          inStock,
-          gallery,
-          description,
-          category,
+          id
+          name
+          inStock
+          gallery
+          description
+          category
           attributes {
-            id,
+            id
+            name
+            type
+            items {
+              id
+              value
+            }
           }
           prices {
-            currency,
-            amount,
+            currency
+            amount
           }
+          brand
         }
       }
     }`,

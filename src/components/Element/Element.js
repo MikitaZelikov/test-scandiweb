@@ -1,20 +1,21 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './element.scss';
 
 class Element extends Component {
   render() {
-    const activeCurrency = this.props.activeCurrency;
-    const getCurrency = this.props.prices.filter((item) => item.currency === activeCurrency);
+    const { id, activeCurrency, urlImg, name, prices } = this.props;
+    const getCurrency = prices.filter((item) => item.currency === activeCurrency);
     const amount = getCurrency[0].amount;
 
     return (
       <article className="product">
-        <a href="/description" className="product__link">
-          <img src={this.props.urlImg} alt="product" className="product__img" />
+        <Link to={`/description/${id}`} className="product__link">
+          <img src={urlImg} alt="product" className="product__img" />
           <div className="product__info">
-            <a href="#" className="product__info--cart">
+            <Link to="#" className="product__info--cart">
               <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d)">
                   <circle cx="37" cy="33" r="26" fill="#5ECE7B" />
@@ -62,11 +63,11 @@ class Element extends Component {
                   </filter>
                 </defs>
               </svg>
-            </a>
-            <p className="product__info--name">{this.props.name}</p>
+            </Link>
+            <p className="product__info--name">{name}</p>
             <p className="product__info--price">{`${amount} ${activeCurrency}`}</p>
           </div>
-        </a>
+        </Link>
       </article>
     );
   }

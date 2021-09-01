@@ -9,9 +9,6 @@ import vectorDown from '../../assets/icons/VectorDown.svg';
 import cart from '../../assets/icons/EmptyCart.svg';
 
 class Header extends Component {
-  // componentDidUpdate() {
-  // }
-
   render() {
     const categories = this.props.allCategories;
 

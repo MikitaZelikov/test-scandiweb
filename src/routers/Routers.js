@@ -13,7 +13,7 @@ class Routers extends Component {
         <Route path='/' exact>
           <ListPage />
         </Route>
-        <Route path='/description' exact>
+        <Route path='/description/:id' exact>
           <DescriptionPage />
         </Route>
         <Route path='/cart' exact>
