@@ -1,8 +1,8 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import productsReducer from './reducers/productsReducer';
+import generalReducer from './reducers/generalReducer';
 
 const rootReducer = combineReducers({
-  productsData: productsReducer,
+  productsData: generalReducer,
 });
 
 const store = configureStore({

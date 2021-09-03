@@ -4,31 +4,48 @@ import { connect } from 'react-redux';
 import './list-page.scss';
 import Header from '../Header/Header';
 import Element from '../Element/Element';
-import { loadProducts } from '../../store/reducers/productsReducer';
+import { getProducts } from '../../api/api-graphql';
 
 class ListPage extends Component {
-  activeCategory = this.props.category;
-
-  componentDidMount() {
-    this.props.getProducts(this.activeCategory);
+  state = {
+    products: [],
   }
 
-  componentDidUpdate() {
-    // eslint-disable-next-line no-console
-    console.log(this.props.category);
+  componentDidMount() {
+    this.fetchProducts();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.category !== prevProps.category) {
+      this.fetchProducts();
+    }
+  }
+
+  async fetchProducts() {
+    this.setState((prevState) => ({
+      ...prevState,
+      products: [],
+    }));
+    const { category } = this.props;
+    const products = await getProducts(category);
+    this.setState((prevState) => ({
+      ...prevState,
+      products,
+    }));
   }
 
   render() {
-    const list = this.props.products;
+    const { category } = this.props;
+    const { products } = this.state;
 
     return (
       <div>
         <Header/>
         <section className="container">
-          <h1>{this.props.category.toUpperCase()}</h1>
+          <h1>{category.toUpperCase()}</h1>
           <div className="container__list">
             {
-              list?.map((item, index) => (
+              products?.map((item, index) => (
               <Element
                 key={index}
                 id={item.id}
@@ -45,16 +62,10 @@ class ListPage extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getProducts: (activeCategory) => dispatch(loadProducts(activeCategory)),
-});
-
 function mapStateToProps(state) {
   return {
-    products: state.productsData.productsList,
     category: state.productsData.activeCategory,
-    categories: state.productsData.allCategories,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListPage);
+export default connect(mapStateToProps)(ListPage);

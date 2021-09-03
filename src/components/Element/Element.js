@@ -1,18 +1,19 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 import './element.scss';
 
 class Element extends Component {
   render() {
     const { id, activeCurrency, urlImg, name, prices } = this.props;
-    const getCurrency = prices.filter((item) => item.currency === activeCurrency);
-    const amount = getCurrency[0].amount;
+    const productPrice = prices.filter((item) => item.currency === activeCurrency);
+    const amount = productPrice[0].amount;
 
     return (
       <article className="product">
-        <Link to={`/description/${id}`} className="product__link">
+        <Link to={`/product/${id}`} className="product__link">
           <img src={urlImg} alt="product" className="product__img" />
           <div className="product__info">
             <Link to="#" className="product__info--cart">
@@ -65,7 +66,9 @@ class Element extends Component {
               </svg>
             </Link>
             <p className="product__info--name">{name}</p>
-            <p className="product__info--price">{`${amount} ${activeCurrency}`}</p>
+            <p className="product__info--price">
+              {`${amount} ${getSymbolFromCurrency(activeCurrency)}`}
+            </p>
           </div>
         </Link>
       </article>

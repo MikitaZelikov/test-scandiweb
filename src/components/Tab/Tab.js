@@ -1,14 +1,14 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { loadProducts } from '../../store/reducers/productsReducer';
-import './category.scss';
+import { setCategory } from '../../store/reducers/generalReducer';
+import './tab.scss';
 
-class Category extends Component {
+class Tab extends Component {
   handleClick = (e) => {
-    e.preventDefault();
-    const selectCategory = e.target.textContent.toLowerCase();
-    this.props.getProducts(selectCategory);
+    const selectedCategory = e.target.textContent.toLowerCase();
+    this.props.setCategory(selectedCategory);
   };
 
   render() {
@@ -17,16 +17,17 @@ class Category extends Component {
     const activeCategoryClass = 'header-nav__link header-nav__link--active';
 
     return (
-      <a href="#" className={activeCategory === text ? activeCategoryClass : categoryClass}
+      <Link to='/'
+      className={activeCategory === text ? activeCategoryClass : categoryClass}
         onClick={this.handleClick}>
         {text.toUpperCase()}
-      </a>
+      </Link>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getProducts: (selectCategory) => dispatch(loadProducts(selectCategory)),
+  setCategory: (selectCategory) => dispatch(setCategory(selectCategory)),
 });
 
 function mapStateToProps(state) {
@@ -35,4 +36,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Category);
+export default connect(mapStateToProps, mapDispatchToProps)(Tab);

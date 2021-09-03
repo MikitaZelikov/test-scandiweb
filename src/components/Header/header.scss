@@ -4,23 +4,35 @@
   justify-content: space-between;
 
   &__nav {
-      display: flex;
-      font-family: "Raleway", sans-serif;
-      font-weight: 400;
+    display: flex;
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
   }
 
   &__selection {
-      display: flex;
-      column-gap: 1.5em;
+    display: flex;
+    column-gap: 1.5em;
+    font-size: 1.125rem;
+    font-weight: 500;
+    position: relative;
   }
 
   &__logo {
-      padding: 0.4em;
+    padding: 0.4em;
   }
 }
 
-.header-selection__link {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 1em;
+.header-selection {
+  &__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 1em;
+    color: #1d1f22;
+    text-decoration: none;
+  }
+
+  &__currency {
+    min-width: 1em;
+  }
 }

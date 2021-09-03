@@ -1,27 +1,25 @@
-export async function findData(activeCategory) {
-  const graphqlQuery = {
-    query: `query getProd($name: CategoryInput) {
+export async function getInitData() {
+  const q = {
+    query: `query getInitData {
       currencies
       categories {
         name
       }
-      category(input: $name) {
+    }`,
+  };
+  const resp = await post(q);
+  return resp.data;
+}
+
+export async function getProducts(category) {
+  const q = {
+    query: `query getProducts($category: CategoryInput) {
+      category(input: $category) {
         products {
           id
           name
           inStock
           gallery
-          description
-          category
-          attributes {
-            id
-            name
-            type
-            items {
-              id
-              value
-            }
-          }
           prices {
             currency
             amount
@@ -30,17 +28,49 @@ export async function findData(activeCategory) {
         }
       }
     }`,
-    variables: { name: { title: activeCategory } },
+    variables: { category: { title: category } },
   };
-  const fetchOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(graphqlQuery),
-  };
-  const response = await fetch('http://localhost:4000/', fetchOptions);
-  return response.json();
+  const resp = await post(q);
+  return resp.data?.category?.products;
 }
 
-export function getProducts(data) {
-  return data.data.category.products;
+export async function getProduct(id) {
+  const q = {
+    query: `query getProduct($id: String!) {
+      product(id: $id) {
+        id
+        name
+        inStock
+        gallery
+        description
+        attributes {
+          id
+          name
+          type
+          items {
+            id
+            value
+          }
+        }
+        prices {
+          currency
+          amount
+        }
+        brand
+      }
+    }`,
+    variables: { id },
+  };
+  const resp = await post(q);
+  return resp.data?.product;
+}
+
+async function post(body) {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  };
+  const response = await fetch('http://localhost:4000/', options);
+  return response.json();
 }
