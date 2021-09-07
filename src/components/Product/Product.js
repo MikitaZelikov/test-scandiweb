@@ -7,18 +7,37 @@ import './product.scss';
 class Product extends Component {
   state = {
     counterImg: 0,
+    counterAmount: 1,
   }
+
+  handleCounterClick = (e) => {
+    if (e.currentTarget.id === 'counter-decrem-btn') {
+      this.setState((prevState) => ({
+        ...prevState,
+        counterAmount: prevState.counterAmount === 1
+          ? 1 : prevState.counterAmount - 1,
+      }));
+    }
+    if (e.currentTarget.id === 'counter-increm-btn') {
+      this.setState((prevState) => ({
+        ...prevState,
+        counterAmount: prevState.counterAmount + 1,
+      }));
+    }
+  };
 
   handleSliderClick = (e) => {
     if (e.target.id === 'slider-prev-btn') {
-      this.setState(() => ({
-        counterImg: this.state.counterImg === 0
-          ? this.props.product.gallery.length - 1 : this.state.counterImg - 1,
+      this.setState((prevState) => ({
+        ...prevState,
+        counterImg: prevState.counterImg === 0
+          ? this.props.product.gallery.length - 1 : prevState.counterImg - 1,
       }));
     }
     if (e.target.id === 'slider-next-btn') {
-      this.setState(() => ({
-        counterImg: this.state.counterImg + 1,
+      this.setState((prevState) => ({
+        ...prevState,
+        counterImg: prevState.counterImg + 1,
       }));
     }
   };
@@ -29,7 +48,8 @@ class Product extends Component {
   }
 
   render() {
-    const { brand, name, prices, gallery } = this.props.product;
+    const { counterImg, counterAmount } = this.state;
+    const { brand, name, prices, gallery, attributes } = this.props.product;
     const activeCurrency = this.props.activeCurrency;
     const amount = prices.filter((item) => (item.currency === activeCurrency))[0].amount;
 
@@ -42,13 +62,23 @@ class Product extends Component {
             {`${getSymbolFromCurrency(activeCurrency)}${amount}`}
           </p>
           <ul className="product-description__btns">
-            <li>M</li>
-            <li>L</li>
+            {
+              attributes?.map((item, index) => (
+                <li
+                  key={index}
+                  style={item.type === 'swatch' ? { backgroundColor: item.value } : null}>
+                  {item.type === 'swatch' ? '' : item.value}
+                </li>
+              ))
+            }
           </ul>
         </div>
         <div className="product-preview">
           <div className="product-preview__counter">
-            <button className="product-preview__counter--btn">
+            <button
+              id="counter-increm-btn"
+              className="product-preview__counter--btn"
+              onClick={this.handleCounterClick}>
               <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.5 15V30" stroke="#1D1F22" stroke-linecap="round"
                   stroke-linejoin="round" />
@@ -57,8 +87,11 @@ class Product extends Component {
                 <rect x="0.5" y="0.5" width="44" height="44" stroke="#1D1F22" />
               </svg>
             </button>
-            <span className="product-preview__counter--amount">1</span>
-            <button className="product-preview__counter--btn">
+            <span className="product-preview__counter--amount">{counterAmount}</span>
+            <button
+              id="counter-decrem-btn"
+              className="product-preview__counter--btn"
+              onClick={this.handleCounterClick}>
               <svg width="45" height="45" viewBox="0 0 45 45" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M15 22.5H30" stroke="#1D1F22" stroke-linecap="round"
@@ -68,7 +101,7 @@ class Product extends Component {
             </button>
           </div>
           <div className="product-preview__figure">
-            <img src={gallery[this.state.counterImg % gallery.length]} alt='image product' />
+            <img src={gallery[counterImg % gallery.length]} alt='image product' />
             <div className="product-preview__slider">
               <button id="slider-prev-btn"
                 className="product-preview__slider--btn"

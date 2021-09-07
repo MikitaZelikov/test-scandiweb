@@ -25,6 +25,7 @@
 
   &__btns {
     display: flex;
+    flex-direction: row;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: 400;
     padding: 0;
@@ -34,16 +35,6 @@
       border: 1px solid #1d1f22;
       padding: 0.875rem 1.75rem;
       text-align: center;
-
-      &:hover {
-        color: #ffffff;
-        background-color: #1d1f22;
-        cursor: pointer;
-      }
-
-      &:active {
-        opacity: 0.85;
-      }
     }
   }
 }
@@ -86,7 +77,6 @@
     position: relative;
     display: flex;
     align-items: center;
-    max-height: 185px;
     max-width: 141px;
 
     img {
@@ -99,7 +89,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    top: 50%;
+    top: 45%;
 
     &--btn {
       background-color: #ffffff00;

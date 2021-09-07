@@ -5,6 +5,7 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 import './currenciesDropdown.scss';
 import { setCurrency } from '../../store/reducers/generalReducer';
 import vectorDown from '../../assets/icons/VectorDown.svg';
+import vectorUp from '../../assets/icons/VectorUp.svg';
 
 class CurrenciesDropdown extends Component {
   constructor() {
@@ -47,7 +48,7 @@ class CurrenciesDropdown extends Component {
       <div id="currensies-dropdown">
         <div className="header-selection__link" onClick={this.toggleDropdownCurrencies}>
           <p className="header-selection__currency">{activeCurrency || defaultCurrency}</p>
-          <img src={vectorDown} alt="arrow" />
+          <img src={this.state.isOpened ? vectorUp : vectorDown} alt="arrow" />
         </div>
         {
           this.state.isOpened ? (
