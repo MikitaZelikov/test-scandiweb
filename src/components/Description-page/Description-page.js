@@ -1,10 +1,12 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 import './description-page.scss';
 import Header from '../Header/Header';
 import { getProduct } from '../../api/api-graphql';
+import { addProductToCart } from '../../store/reducers/generalReducer';
 
 const DescriptionPage = (props) => {
   const { id } = useParams();
@@ -15,6 +17,28 @@ class DescriptionPage1 extends Component {
   state = {
     mainPhoto: '',
     product: null,
+    attributes: {},
+  };
+
+  handleClickAdd = (state) => {
+    const selectedProd = { ...state.product };
+    const attributesProd = Object.values(state.attributes);
+    selectedProd.attributes = attributesProd;
+    this.props.addProductToCart(selectedProd);
+  };
+
+  handleClickPhoto = (uri) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      mainPhoto: uri,
+    }));
+  };
+
+  handleSelectedOption = (name, type, value) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      attributes: { ...prevState.attributes, [name]: { name, type, value } },
+    }));
   };
 
   async componentDidMount() {
@@ -26,12 +50,10 @@ class DescriptionPage1 extends Component {
     }));
   }
 
-  handleClickPhoto = (uri) => {
-    this.setState((prevState) => ({
-      ...prevState,
-      mainPhoto: uri,
-    }));
-  };
+  componentDidUpdate() {
+    // eslint-disable-next-line no-console
+    console.log(this.props.cart);
+  }
 
   render() {
     const { currency } = this.props;
@@ -67,14 +89,19 @@ class DescriptionPage1 extends Component {
             {
               attributesProduct.map((attr, idx) => (
                 <div className="product-description__size" key={idx}>
-                  <p key={idx} className="product-description__size--title">
+                  <p className="product-description__size--title">
                     {`${attr.name}:`}
                   </p>
                   <ul className="product-description__size--btns">
                     {
                       attr?.items.map((elem, i) => (
-                        <li style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}
-                          key={i}>
+                        <li
+                          key={i}
+                          style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}
+                          onClick={() => this.handleSelectedOption(
+                            attr.name,
+                            attr.type,
+                            elem.value)}>
                           {attr.type === 'swatch' ? '' : elem.value}
                         </li>
                       ))
@@ -85,9 +112,15 @@ class DescriptionPage1 extends Component {
             }
             <div className="product-description__price">
               <p className="product-description__price--title">PRICE:</p>
-              <p className="product-description__price--amount">{`${currentAmount} ${currency}`}</p>
+              <p className="product-description__price--amount">
+                {`${getSymbolFromCurrency(currency)}${currentAmount}`}
+              </p>
             </div>
-            <button className="product-description__add-btn">ADD TO CART</button>
+            <button
+              className="product-description__add-btn"
+              onClick={() => this.handleClickAdd(this.state)}>
+              ADD TO CART
+            </button>
             <p
               className="product-description__overview"
               dangerouslySetInnerHTML={{ __html: product.description }}
@@ -99,10 +132,13 @@ class DescriptionPage1 extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    currency: state.productsData.activeCurrency,
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  addProductToCart: (localState) => dispatch(addProductToCart(localState)),
+});
 
-export default connect(mapStateToProps)(DescriptionPage);
+const mapStateToProps = (state) => ({
+  currency: state.productsData.activeCurrency,
+  cart: state.productsData.cart,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DescriptionPage);

@@ -15,24 +15,10 @@
     font-size: 1.125rem;
     font-weight: 500;
     position: relative;
+    align-items: center;
   }
 
   &__logo {
     padding: 0.4em;
-  }
-}
-
-.header-selection {
-  &__link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 1em;
-    color: #1d1f22;
-    text-decoration: none;
-  }
-
-  &__currency {
-    min-width: 1em;
   }
 }

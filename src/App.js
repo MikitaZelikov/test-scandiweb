@@ -15,7 +15,7 @@ class App extends Component {
     const { initialDataIsLoading } = this.props;
     return initialDataIsLoading ? 'Loading...' : (
       <BrowserRouter>
-        <Routers />
+        <Routers/>
       </BrowserRouter>
     );
   }

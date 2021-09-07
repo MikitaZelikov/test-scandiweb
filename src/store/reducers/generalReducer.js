@@ -17,14 +17,6 @@ export const loadInitData = createAsyncThunk(
   'data/loadInitData', () => apiGraphql.getInitData(),
 );
 
-// export const loadProducts = createAsyncThunk(
-//   'data/loadProducts',
-//   async (activeCategory) => {
-//     const data = await apiGraphql.getData(activeCategory);
-//     return { data, activeCategory };
-//   },
-// );
-
 export const commonSlice = createSlice({
   name: 'data',
   initialState,
@@ -37,18 +29,13 @@ export const commonSlice = createSlice({
       const duplState = state;
       duplState.activeCurrency = action.payload;
     },
+    addProductToCart: (state, action) => {
+      const duplState = state;
+      duplState.cart.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(loadProducts.pending, (state) => {
-      //   const duplState = state;
-      //   duplState.productsAreLoading = true;
-      // })
-      // .addCase(loadProducts.fulfilled, (state, action) => {
-      //   const duplState = state;
-      //   duplState.productsAreLoading = false;
-      //   duplState.productsList = action.payload.data.data.category.products;
-      // })
       .addCase(loadInitData.fulfilled, (state, action) => {
         const duplState = state;
         duplState.allCategories = action.payload.categories;
@@ -60,5 +47,5 @@ export const commonSlice = createSlice({
   },
 });
 
-export const { setCategory, setCurrency } = commonSlice.actions;
+export const { setCategory, setCurrency, addProductToCart } = commonSlice.actions;
 export default commonSlice.reducer;

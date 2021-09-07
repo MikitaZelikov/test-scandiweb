@@ -67,7 +67,7 @@ class Element extends Component {
             </Link>
             <p className="product__info--name">{name}</p>
             <p className="product__info--price">
-              {`${amount} ${getSymbolFromCurrency(activeCurrency)}`}
+              {`${getSymbolFromCurrency(activeCurrency)}${amount}`}
             </p>
           </div>
         </Link>

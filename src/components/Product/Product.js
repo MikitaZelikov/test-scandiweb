@@ -1,16 +1,46 @@
 import { Component } from 'react';
+import { connect } from 'react-redux';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 import './product.scss';
-import ProductCart from '../../assets/icons/ProductCart.png';
 
 class Product extends Component {
+  state = {
+    counterImg: 0,
+  }
+
+  handleSliderClick = (e) => {
+    if (e.target.id === 'slider-prev-btn') {
+      this.setState(() => ({
+        counterImg: this.state.counterImg === 0
+          ? this.props.product.gallery.length - 1 : this.state.counterImg - 1,
+      }));
+    }
+    if (e.target.id === 'slider-next-btn') {
+      this.setState(() => ({
+        counterImg: this.state.counterImg + 1,
+      }));
+    }
+  };
+
+  componentDidUpdate() {
+    // eslint-disable-next-line no-console
+    console.log(this.state);
+  }
+
   render() {
+    const { brand, name, prices, gallery } = this.props.product;
+    const activeCurrency = this.props.activeCurrency;
+    const amount = prices.filter((item) => (item.currency === activeCurrency))[0].amount;
+
     return (
       <li className="product-item">
         <div className="product-description">
-          <h1 className="product-description__title">Apollo</h1>
-          <p className="product-description__desc">Running Short</p>
-          <p className="product-description__amount">$50.00</p>
+          <h1 className="product-description__title">{brand}</h1>
+          <p className="product-description__desc">{name}</p>
+          <p className="product-description__amount">
+            {`${getSymbolFromCurrency(activeCurrency)}${amount}`}
+          </p>
           <ul className="product-description__btns">
             <li>M</li>
             <li>L</li>
@@ -38,10 +68,18 @@ class Product extends Component {
             </button>
           </div>
           <div className="product-preview__figure">
-            <img src={ProductCart} alt='image product' />
+            <img src={gallery[this.state.counterImg % gallery.length]} alt='image product' />
             <div className="product-preview__slider">
-              <button className="product-preview__slider--btn">{'<'}</button>
-              <button className="product-preview__slider--btn">{'>'}</button>
+              <button id="slider-prev-btn"
+                className="product-preview__slider--btn"
+                onClick={this.handleSliderClick}>
+                {'<'}
+              </button>
+              <button id="slider-next-btn"
+                className="product-preview__slider--btn"
+                onClick={this.handleSliderClick}>
+                {'>'}
+              </button>
             </div>
           </div>
         </div>
@@ -50,4 +88,8 @@ class Product extends Component {
   }
 }
 
-export default Product;
+const mapStateToProps = (state) => ({
+  activeCurrency: state.productsData.activeCurrency,
+});
+
+export default connect(mapStateToProps)(Product);

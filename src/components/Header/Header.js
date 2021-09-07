@@ -1,36 +1,24 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import getSymbolFromCurrency from 'currency-symbol-map';
 
 import './header.scss';
-import DropdownCurrencies from '../DropdownCurrencies/DropdownCurrencies';
+import CurrenciesDropdown from '../CurrenciesDropdown/CurrenciesDropdown';
+import CartDropdown from '../CartDropdown/CartDropdown';
 import Tab from '../Tab/Tab';
-import { setCurrency } from '../../store/reducers/generalReducer';
 import aLogo from '../../assets/icons/Group.svg';
-import vectorDown from '../../assets/icons/VectorDown.svg';
-import cart from '../../assets/icons/EmptyCart.svg';
 
 class Header extends Component {
   state = {
-    isOpenedCurrencies: false,
     isOpenedCart: false,
   };
 
-  handleDropdownCurrencies = () => {
-    this.setState({ isOpened: !this.state.isOpened });
-  };
-
-  handleActivateCurrency = (currency) => {
-    this.props.setCurrency(currency);
-    this.setState({ isOpened: !this.state.isOpened });
+  hideDropdownCurrencies = () => {
+    this.setState({ isOpened: false });
   };
 
   render() {
     const categories = this.props.allCategories;
-    const currencies = this.props.allCurrencies;
-    const activeCurrency = getSymbolFromCurrency(this.props.activeCurrency);
-    const defaultCurrency = getSymbolFromCurrency(currencies[0]);
 
     return (
       <header className="header">
@@ -50,16 +38,8 @@ class Header extends Component {
           </Link>
         </div>
         <div className="header__selection header-selection">
-          <Link to="#" className="header-selection__link" onClick={this.handleDropdownCurrencies}>
-            <p className="header-selection__currency">{activeCurrency || defaultCurrency}</p>
-            <img src={vectorDown} alt="arrow" />
-          </Link>
-          <Link to="/cart" className="header-selection__link">
-            <img src={cart} alt="cart" />
-          </Link>
-          {this.state.isOpened ? <DropdownCurrencies
-            currencies={currencies}
-            handleActivateCurrency={this.handleActivateCurrency} /> : null}
+          <CurrenciesDropdown/>
+          <CartDropdown/>
         </div>
       </header>
     );
@@ -69,13 +49,7 @@ class Header extends Component {
 function mapStateToProps(state) {
   return {
     allCategories: state.productsData.allCategories,
-    allCurrencies: state.productsData.allCurrencies,
-    activeCurrency: state.productsData.activeCurrency,
   };
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrency: (currency) => dispatch(setCurrency(currency)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Header);
