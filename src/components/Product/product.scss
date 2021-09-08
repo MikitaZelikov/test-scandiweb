@@ -35,6 +35,16 @@
       border: 1px solid #1d1f22;
       padding: 0.875rem 1.75rem;
       text-align: center;
+
+      &:hover {
+        color: #ffffff;
+        background-color: #1d1f22;
+        cursor: pointer;
+      }
+
+      &:active {
+        opacity: 0.85;
+      }
     }
   }
 }

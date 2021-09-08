@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import ListPage from '../components/List-page/List-page';
 import DescriptionPage from '../components/Description-page/Description-page';
@@ -22,6 +22,9 @@ class Routers extends Component {
         {/* <Route path='/cart-overlay' exact>
           <CartOverlay />
         </Route> */}
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
       </Switch>
     );
   }

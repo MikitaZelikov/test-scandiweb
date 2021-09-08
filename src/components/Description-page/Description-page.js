@@ -17,12 +17,12 @@ class DescriptionPage1 extends Component {
   state = {
     mainPhoto: '',
     product: null,
-    attributes: {},
+    selectedAttributes: {},
   };
 
   handleClickAdd = (state) => {
     const selectedProd = { ...state.product };
-    const attributesProd = Object.values(state.attributes);
+    const attributesProd = Object.values(state.selectedAttributes);
     selectedProd.attributes = attributesProd;
     this.props.addProductToCart(selectedProd);
   };
@@ -37,7 +37,7 @@ class DescriptionPage1 extends Component {
   handleSelectedOption = (name, type, value) => {
     this.setState((prevState) => ({
       ...prevState,
-      attributes: { ...prevState.attributes, [name]: { name, type, value } },
+      selectedAttributes: { ...prevState.selectedAttributes, [name]: { name, type, value } },
     }));
   };
 
@@ -57,15 +57,20 @@ class DescriptionPage1 extends Component {
 
   render() {
     const { currency } = this.props;
-    const { product, mainPhoto } = this.state;
+    const { product, mainPhoto, selectedAttributes } = this.state;
+    const inStock = product?.inStock;
     const currentAmount = product?.prices.find((item) => item.currency === currency).amount;
-    const attributesProduct = product?.attributes;
+    const productAttributes = product?.attributes;
 
     return product ? (
       <div>
         <Header />
         <main className="description-container">
-          <ul className="product-gallery" id="product-gallery">
+          <ul
+            className="product-gallery"
+            id="product-gallery"
+            style={!inStock ? { opacity: 0.5 } : null}
+          >
             {
               product.gallery.map((item, index) => (
                 <li
@@ -78,7 +83,12 @@ class DescriptionPage1 extends Component {
               ))
             }
           </ul>
-          <figure className="product-figure" id="product-figure">
+          <figure
+            className="product-figure"
+            id="product-figure"
+            style={!inStock ? { opacity: 0.5 } : null}
+          >
+            {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
             <img src={mainPhoto || product.gallery[0]} alt="main photo" />
           </figure>
           <article className="product-description" id="product-description">
@@ -87,7 +97,7 @@ class DescriptionPage1 extends Component {
               <p className="product-description__heading--desc">{product.name}</p>
             </div>
             {
-              attributesProduct.map((attr, idx) => (
+              productAttributes.map((attr, idx) => (
                 <div className="product-description__size" key={idx}>
                   <p className="product-description__size--title">
                     {`${attr.name}:`}
@@ -95,15 +105,17 @@ class DescriptionPage1 extends Component {
                   <ul className="product-description__size--btns">
                     {
                       attr?.items.map((elem, i) => (
-                        <li
-                          key={i}
-                          style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}
-                          onClick={() => this.handleSelectedOption(
-                            attr.name,
-                            attr.type,
-                            elem.value)}>
-                          {attr.type === 'swatch' ? '' : elem.value}
-                        </li>
+                          <li
+                            key={i}
+                            className={selectedAttributes[attr.name]?.value === elem.value
+                              ? 'selected' : null}
+                            style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}
+                            onClick={() => this.handleSelectedOption(
+                              attr.name,
+                              attr.type,
+                              elem.value)}>
+                            {attr.type === 'swatch' ? '' : elem.value}
+                          </li>
                       ))
                     }
                   </ul>
@@ -113,12 +125,13 @@ class DescriptionPage1 extends Component {
             <div className="product-description__price">
               <p className="product-description__price--title">PRICE:</p>
               <p className="product-description__price--amount">
-                {`${getSymbolFromCurrency(currency)}${currentAmount}`}
+                {`${getSymbolFromCurrency(currency)}${inStock ? currentAmount : '--'}`}
               </p>
             </div>
             <button
               className="product-description__add-btn"
-              onClick={() => this.handleClickAdd(this.state)}>
+              onClick={() => this.handleClickAdd(this.state)}
+              hidden={!inStock || false}>
               ADD TO CART
             </button>
             <p

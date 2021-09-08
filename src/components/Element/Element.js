@@ -7,16 +7,17 @@ import './element.scss';
 
 class Element extends Component {
   render() {
-    const { id, activeCurrency, urlImg, name, prices } = this.props;
+    const { id, activeCurrency, urlImg, name, prices, inStock } = this.props;
     const productPrice = prices.filter((item) => item.currency === activeCurrency);
     const amount = productPrice[0].amount;
 
     return (
-      <article className="product">
+      <article className="product" style={!inStock ? { opacity: 0.5 } : null}>
         <Link to={`/product/${id}`} className="product__link">
+          {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
           <img src={urlImg} alt="product" className="product__img" />
           <div className="product__info">
-            <Link to="#" className="product__info--cart">
+            <span to="#" className="product__info--cart" hidden={!inStock}>
               <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d)">
                   <circle cx="37" cy="33" r="26" fill="#5ECE7B" />
@@ -64,10 +65,10 @@ class Element extends Component {
                   </filter>
                 </defs>
               </svg>
-            </Link>
+            </span>
             <p className="product__info--name">{name}</p>
             <p className="product__info--price">
-              {`${getSymbolFromCurrency(activeCurrency)}${amount}`}
+              {`${getSymbolFromCurrency(activeCurrency)}${inStock ? amount : '--'}`}
             </p>
           </div>
         </Link>

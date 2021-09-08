@@ -49,6 +49,7 @@ class ListPage extends Component {
               <Element
                 key={index}
                 id={item.id}
+                inStock={item.inStock}
                 urlImg={item.gallery[0]}
                 name={item.name}
                 prices={item.prices}
