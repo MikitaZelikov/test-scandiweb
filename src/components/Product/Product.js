@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
 import './product.scss';
+import { refreshCart } from '../../store/reducers/generalReducer';
 
 class Product extends Component {
   state = {
@@ -42,9 +43,19 @@ class Product extends Component {
     }
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    const { currentCart, refreshCurrentCart } = this.props;
+    if (prevState.counterAmount !== this.state.counterAmount) {
+      const productsCart = JSON.parse(JSON.stringify(currentCart));
+      const correctedProduct = productsCart.find((item) => item.name === this.props.product.name);
+      correctedProduct.amount = this.state.counterAmount;
+      const correctedCart = productsCart.filter((item) => item.name
+      !== this.props.product.name) || [];
+      correctedCart.push(correctedProduct);
+      refreshCurrentCart(correctedCart);
+    }
     // eslint-disable-next-line no-console
-    console.log(this.state);
+    console.log(this.props.currentCart);
   }
 
   render() {
@@ -64,10 +75,13 @@ class Product extends Component {
           <ul className="product-description__btns">
             {
               attributes?.map((item, index) => (
-                <li
-                  key={index}
-                  style={item.type === 'swatch' ? { backgroundColor: item.value } : null}>
-                  {item.type === 'swatch' ? '' : item.value}
+                <li className="product-description__size--title">
+                  {item.name}
+                  <p
+                    key={index}
+                    style={item.type === 'swatch' ? { backgroundColor: item.value } : null}>
+                    {item.type === 'swatch' ? '' : item.value}
+                  </p>
                 </li>
               ))
             }
@@ -123,6 +137,11 @@ class Product extends Component {
 
 const mapStateToProps = (state) => ({
   activeCurrency: state.productsData.activeCurrency,
+  currentCart: state.productsData.cart,
 });
 
-export default connect(mapStateToProps)(Product);
+const mapDispatchToProps = (dispatch) => ({
+  refreshCurrentCart: (cart) => dispatch(refreshCart(cart)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);

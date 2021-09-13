@@ -24,6 +24,7 @@ class DescriptionPage1 extends Component {
     const selectedProd = { ...state.product };
     const attributesProd = Object.values(state.selectedAttributes);
     selectedProd.attributes = attributesProd;
+    selectedProd.amount = 1;
     this.props.addProductToCart(selectedProd);
   };
 

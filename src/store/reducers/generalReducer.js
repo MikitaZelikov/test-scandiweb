@@ -33,6 +33,11 @@ export const commonSlice = createSlice({
       const duplState = state;
       duplState.cart.push(action.payload);
     },
+    refreshCart: (state, action) => {
+      const duplState = state;
+      duplState.cart = action.payload;
+      debugger;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -47,5 +52,5 @@ export const commonSlice = createSlice({
   },
 });
 
-export const { setCategory, setCurrency, addProductToCart } = commonSlice.actions;
+export const { setCategory, setCurrency, addProductToCart, refreshCart } = commonSlice.actions;
 export default commonSlice.reducer;
