@@ -8,6 +8,7 @@ import Product from '../Product/Product';
 class Cart extends Component {
   render() {
     const { cart } = this.props;
+    const localPath = window.location.pathname;
 
     return (
       <div>
@@ -17,7 +18,7 @@ class Cart extends Component {
           <ul className="cart-container__list">
             {
               cart?.map((item, index) => (
-                <Product key={index} product={item}/>
+                <Product key={index} product={item} localPath={localPath}/>
               ))
             }
           </ul>

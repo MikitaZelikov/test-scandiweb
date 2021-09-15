@@ -45,7 +45,7 @@ class CurrenciesDropdown extends Component {
     const defaultCurrency = getSymbolFromCurrency(currencies[0]);
 
     return (
-      <div id="currensies-dropdown">
+      <section id="currensies-dropdown">
         <div className="header-selection__link" onClick={this.toggleDropdownCurrencies}>
           <p className="header-selection__currency">{activeCurrency || defaultCurrency}</p>
           <img src={this.state.isOpened ? vectorUp : vectorDown} alt="arrow" />
@@ -62,7 +62,7 @@ class CurrenciesDropdown extends Component {
               }
             </ul>) : null
         }
-      </div>
+      </section>
     );
   }
 }

@@ -36,7 +36,6 @@ export const commonSlice = createSlice({
     refreshCart: (state, action) => {
       const duplState = state;
       duplState.cart = action.payload;
-      debugger;
     },
   },
   extraReducers: (builder) => {
