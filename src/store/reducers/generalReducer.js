@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as apiGraphql from '../../api/api-graphql';
 
 const initialState = {
-  productsAreLoading: false,
   initialDataIsLoading: true,
   productsList: [],
   allCategories: [],
@@ -10,7 +9,7 @@ const initialState = {
   allCurrencies: [],
   activeCurrency: null,
   cart: [],
-  size: '',
+  dropdownCartIsOpened: false,
 };
 
 export const loadInitData = createAsyncThunk(
@@ -33,9 +32,19 @@ export const commonSlice = createSlice({
       const duplState = state;
       duplState.cart.push(action.payload);
     },
-    refreshCart: (state, action) => {
+    setProductAmount: (state, action) => {
       const duplState = state;
-      duplState.cart = action.payload;
+      const currentCart = state.cart;
+      const { amount, id } = action.payload;
+      const neededProduct = currentCart.find((item) => item.additionalId === id);
+      const indexNeededProduct = currentCart.findIndex((item) => item.additionalId === id);
+      neededProduct.amount = amount;
+      currentCart.splice(indexNeededProduct, 1, neededProduct);
+      duplState.cart = currentCart;
+    },
+    toggleDropdownCart: (state) => {
+      const duplState = state;
+      duplState.dropdownCartIsOpened = !duplState.dropdownCartIsOpened;
     },
   },
   extraReducers: (builder) => {
@@ -51,5 +60,11 @@ export const commonSlice = createSlice({
   },
 });
 
-export const { setCategory, setCurrency, addProductToCart, refreshCart } = commonSlice.actions;
+export const {
+  setCategory,
+  setCurrency,
+  addProductToCart,
+  setProductAmount,
+  toggleDropdownCart,
+} = commonSlice.actions;
 export default commonSlice.reducer;

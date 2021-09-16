@@ -3,27 +3,25 @@ import { connect } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
 import './product.scss';
-import { refreshCart } from '../../store/reducers/generalReducer';
+import { setProductAmount } from '../../store/reducers/generalReducer';
 
 class Product extends Component {
   state = {
     counterImg: 0,
-    counterAmount: 1,
   }
 
   handleCounterClick = (e) => {
+    const { setProductAmount: setProdAmount, product } = this.props;
+    let refreshAmount;
+
     if (e.currentTarget.id === 'counter-decrem-btn') {
-      this.setState((prevState) => ({
-        ...prevState,
-        counterAmount: prevState.counterAmount === 1
-          ? 1 : prevState.counterAmount - 1,
-      }));
+      refreshAmount = product.amount === 1 ? 1 : product.amount - 1;
+      setProdAmount({ amount: refreshAmount, id: product.additionalId });
     }
+
     if (e.currentTarget.id === 'counter-increm-btn') {
-      this.setState((prevState) => ({
-        ...prevState,
-        counterAmount: prevState.counterAmount + 1,
-      }));
+      refreshAmount = product.amount + 1;
+      setProdAmount({ amount: refreshAmount, id: product.additionalId });
     }
   };
 
@@ -43,26 +41,11 @@ class Product extends Component {
     }
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { currentCart, refreshCurrentCart } = this.props;
-    if (prevState.counterAmount !== this.state.counterAmount) {
-      const productsCart = JSON.parse(JSON.stringify(currentCart));
-      const correctedProduct = productsCart.find((item) => item.name === this.props.product.name);
-      correctedProduct.amount = this.state.counterAmount;
-      const correctedCart = productsCart.filter((item) => item.name
-        !== this.props.product.name) || [];
-      correctedCart.push(correctedProduct);
-      refreshCurrentCart(correctedCart);
-    }
-    // eslint-disable-next-line no-console
-    console.log(this.props.currentCart);
-  }
-
   render() {
-    const { counterImg, counterAmount } = this.state;
-    const { brand, name, prices, gallery, attributes } = this.props.product;
+    const { counterImg } = this.state;
+    const { brand, name, prices, gallery, attributes, amount } = this.props.product;
     const activeCurrency = this.props.activeCurrency;
-    const amount = prices.filter((item) => (item.currency === activeCurrency))[0].amount;
+    const price = prices.filter((item) => (item.currency === activeCurrency))[0].amount;
     const isCart = this.props.localPath === '/cart';
 
     return (
@@ -76,7 +59,7 @@ class Product extends Component {
             : 'product-description__desc--dropdown'}>{name}</p>
           <p className={isCart ? 'product-description__amount'
             : 'product-description__amount--dropdown'}>
-            {`${getSymbolFromCurrency(activeCurrency)}${amount}`}
+            {`${getSymbolFromCurrency(activeCurrency)}${price}`}
           </p>
           <ul className="product-description__btns">
             {
@@ -111,7 +94,7 @@ class Product extends Component {
             </button>
             <span className={isCart ? 'product-preview__counter--amount'
               : 'product-preview__counter--amount--dropdown'}>
-              {counterAmount}
+              {amount}
             </span>
             <button
               id="counter-decrem-btn"
@@ -153,7 +136,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  refreshCurrentCart: (cart) => dispatch(refreshCart(cart)),
+  setProductAmount: ({ amount, id }) => dispatch(setProductAmount({ amount, id })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

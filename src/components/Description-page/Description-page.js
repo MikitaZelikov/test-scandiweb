@@ -2,6 +2,8 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { nanoid } from 'nanoid';
 
 import './description-page.scss';
 import Header from '../Header/Header';
@@ -25,6 +27,7 @@ class DescriptionPage1 extends Component {
     const attributesProd = Object.values(state.selectedAttributes);
     selectedProd.attributes = attributesProd;
     selectedProd.amount = 1;
+    selectedProd.additionalId = nanoid(6);
     this.props.addProductToCart(selectedProd);
   };
 
@@ -51,21 +54,17 @@ class DescriptionPage1 extends Component {
     }));
   }
 
-  componentDidUpdate() {
-    // eslint-disable-next-line no-console
-    console.log(this.props.cart);
-  }
-
   render() {
-    const { currency } = this.props;
+    const { currency, isOpened } = this.props;
     const { product, mainPhoto, selectedAttributes } = this.state;
     const inStock = product?.inStock;
     const currentAmount = product?.prices.find((item) => item.currency === currency).amount;
     const productAttributes = product?.attributes;
 
     return product ? (
-      <div>
+      <div className="wrapper">
         <Header />
+        <div className="overlay" hidden={!isOpened}></div>
         <main className="description-container">
           <ul
             className="product-gallery"

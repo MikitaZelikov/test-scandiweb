@@ -2,6 +2,10 @@
   padding: 1.5em 7vw 0;
   display: flex;
   justify-content: space-between;
+  position: relative;
+  background-color: #FFFFFF;
+  z-index: 2;
+
 
   &__nav {
     display: flex;

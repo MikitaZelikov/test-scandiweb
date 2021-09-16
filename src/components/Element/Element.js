@@ -6,6 +6,9 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 import './element.scss';
 
 class Element extends Component {
+  handleCartClick = () => {
+  };
+
   render() {
     const { id, activeCurrency, urlImg, name, prices, inStock } = this.props;
     const productPrice = prices.filter((item) => item.currency === activeCurrency);
@@ -17,7 +20,7 @@ class Element extends Component {
           {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
           <img src={urlImg} alt="product" className="product__img" />
           <div className="product__info">
-            <span to="#" className="product__info--cart" hidden={!inStock}>
+            <span className="product__info--cart" hidden={!inStock} onClick={this.handleCartClick}>
               <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d)">
                   <circle cx="37" cy="33" r="26" fill="#5ECE7B" />

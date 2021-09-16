@@ -35,12 +35,13 @@ class ListPage extends Component {
   }
 
   render() {
-    const { category } = this.props;
+    const { category, isOpened } = this.props;
     const { products } = this.state;
 
     return (
-      <div>
+      <div className="wrapper">
         <Header/>
+        <div className="overlay" hidden={!isOpened}></div>
         <section className="container">
           <h1>{category.toUpperCase()}</h1>
           <div className="container__list">

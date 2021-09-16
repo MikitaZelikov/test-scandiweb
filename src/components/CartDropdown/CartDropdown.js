@@ -5,6 +5,7 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 
 import cart from '../../assets/icons/EmptyCart.svg';
 import Product from '../Product/Product';
+import { toggleDropdownCart } from '../../store/reducers/generalReducer';
 import './cartDropdown.scss';
 
 class CartDropdown extends Component {
@@ -13,17 +14,16 @@ class CartDropdown extends Component {
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
   }
 
-  state = {
-    isOpened: false,
-  };
-
-  toggleDropdownCart = () => {
-    this.setState({ isOpened: !this.state.isOpened });
+  handleDropdownCartClick = () => {
+    this.props.toggleDropdown();
   };
 
   handleDocumentClick(e) {
+    const { toggleDropdown, dropdownCartIsOpened } = this.props;
     if (e.target.closest('#cart-dropdown')) return;
-    this.setState({ isOpened: false });
+    if (dropdownCartIsOpened) {
+      toggleDropdown();
+    }
   }
 
   componentDidMount() {
@@ -38,26 +38,30 @@ class CartDropdown extends Component {
     const currentCart = this.props.cart;
     const localPath = window.location.pathname;
     const activeCurrency = this.props.activeCurrency;
-    const getTotal = (amount, prod) => {
+    const getTotal = (count, prod) => {
       const currentPrice = prod.prices.find((price) => price.currency === activeCurrency);
-      const total = amount + currentPrice.amount;
+      const total = count + currentPrice.amount * prod.amount;
       return Math.round(total * 100) / 100;
     };
+    const totalCount = currentCart.reduce((count, prod) => {
+      const total = prod.amount + count;
+      return total;
+    }, 0);
 
     return (
       <section id="cart-dropdown" className="cart-dropdown">
-        <div to="/cart" className="cart-dropdown__link" onClick={this.toggleDropdownCart}>
+        <div to="/cart" className="cart-dropdown__link" onClick={this.handleDropdownCartClick}>
           <img src={cart} alt="cart" />
           {
             localPath !== '/cart' ? (
-            <span className="cart-dropdown__counter-icon">{currentCart.length}</span>) : null
+            <span className="cart-dropdown__counter-icon">{totalCount}</span>) : null
           }
         </div>
         {
-          this.state.isOpened && localPath !== '/cart' ? (
-            <div className="cart-dropdown__overlay">
+          this.props.dropdownCartIsOpened && localPath !== '/cart' ? (
+            <div className="cart-dropdown__menu">
               <h1 className="cart-dropdown__title">
-                <span><b>My Bag,</b></span>{` ${currentCart.length} items`}
+                <span><b>My Bag,</b></span>{` ${totalCount} items`}
               </h1>
               <ul className="cart-dropdown__list">
                 {
@@ -88,6 +92,11 @@ class CartDropdown extends Component {
 const mapStateToProps = (state) => ({
   cart: state.productsData.cart,
   activeCurrency: state.productsData.activeCurrency,
+  dropdownCartIsOpened: state.productsData.dropdownCartIsOpened,
 });
 
-export default connect(mapStateToProps)(CartDropdown);
+const mapDispatchToProps = (dispatch) => ({
+  toggleDropdown: () => dispatch(toggleDropdownCart()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartDropdown);
