@@ -46,6 +46,13 @@ export const commonSlice = createSlice({
       const duplState = state;
       duplState.dropdownCartIsOpened = !duplState.dropdownCartIsOpened;
     },
+    deleteProductFromCart: (state, action) => {
+      const duplState = state;
+      const currentCart = state.cart;
+      const indexDelProduct = currentCart.findIndex((item) => item.additionalId === action.payload);
+      currentCart.splice(indexDelProduct, 1);
+      duplState.cart = currentCart;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -66,5 +73,6 @@ export const {
   addProductToCart,
   setProductAmount,
   toggleDropdownCart,
+  deleteProductFromCart,
 } = commonSlice.actions;
 export default commonSlice.reducer;

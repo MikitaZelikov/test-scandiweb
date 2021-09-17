@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { nanoid } from 'nanoid';
@@ -10,19 +9,29 @@ import Header from '../Header/Header';
 import { getProduct } from '../../api/api-graphql';
 import { addProductToCart } from '../../store/reducers/generalReducer';
 
-const DescriptionPage = (props) => {
-  const { id } = useParams();
-  return <DescriptionPage1 {...props} id={id} />;
-};
-
-class DescriptionPage1 extends Component {
+class DescriptionPage extends Component {
   state = {
     mainPhoto: '',
     product: null,
     selectedAttributes: {},
+    isWarningMessage: false,
   };
 
-  handleClickAdd = (state) => {
+  handleClickAdd = (state, e) => {
+    const { selectedAttributes, product } = this.state;
+    const isDisabledAddBtn = Object.keys(selectedAttributes)?.length !== product.attributes.length;
+
+    if (!isDisabledAddBtn || !this.state.isWarningMessage) {
+      this.setState((prevState) => ({
+        ...prevState,
+        isWarningMessage: !prevState.isWarningMessage,
+      }));
+    }
+    if (isDisabledAddBtn) {
+      e.preventDefault();
+      return;
+    }
+
     const selectedProd = { ...state.product };
     const attributesProd = Object.values(state.selectedAttributes);
     selectedProd.attributes = attributesProd;
@@ -46,7 +55,7 @@ class DescriptionPage1 extends Component {
   };
 
   async componentDidMount() {
-    const { id } = this.props;
+    const id = window.location.pathname.split('/').pop();
     const product = await getProduct(id);
     this.setState((prevState) => ({
       ...prevState,
@@ -56,10 +65,11 @@ class DescriptionPage1 extends Component {
 
   render() {
     const { currency, isOpened } = this.props;
-    const { product, mainPhoto, selectedAttributes } = this.state;
+    const { product, mainPhoto, selectedAttributes, isWarningMessage } = this.state;
     const inStock = product?.inStock;
     const currentAmount = product?.prices.find((item) => item.currency === currency).amount;
     const productAttributes = product?.attributes;
+    const isDisabledAddBtn = Object.keys(selectedAttributes)?.length !== productAttributes?.length;
 
     return product ? (
       <div className="wrapper">
@@ -105,22 +115,29 @@ class DescriptionPage1 extends Component {
                   <ul className="product-description__size--btns">
                     {
                       attr?.items.map((elem, i) => (
-                          <li
-                            key={i}
-                            className={selectedAttributes[attr.name]?.value === elem.value
-                              ? 'selected' : null}
-                            style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}
-                            onClick={() => this.handleSelectedOption(
-                              attr.name,
-                              attr.type,
-                              elem.value)}>
-                            {attr.type === 'swatch' ? '' : elem.value}
-                          </li>
+                        <li
+                          key={i}
+                          className={selectedAttributes[attr.name]?.value === elem.value
+                            ? 'selected' : null}
+                          style={attr.type === 'swatch' ? { backgroundColor: elem.value } : null}
+                          onClick={() => this.handleSelectedOption(
+                            attr.name,
+                            attr.type,
+                            elem.value)}>
+                          {attr.type === 'swatch' ? '' : elem.value}
+                        </li>
                       ))
                     }
                   </ul>
                 </div>
               ))
+            }
+            {
+              isWarningMessage && isDisabledAddBtn ? (
+                <span className="product-description__warning">
+                  select properties for this product
+                </span>
+              ) : null
             }
             <div className="product-description__price">
               <p className="product-description__price--title">PRICE:</p>
@@ -130,8 +147,9 @@ class DescriptionPage1 extends Component {
             </div>
             <button
               className="product-description__add-btn"
-              onClick={() => this.handleClickAdd(this.state)}
-              hidden={!inStock || false}>
+              onClick={(e) => this.handleClickAdd(this.state, e)}
+              hidden={!inStock || false}
+            >
               ADD TO CART
             </button>
             <p

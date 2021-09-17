@@ -83,10 +83,31 @@
   }
 }
 
+.product-delete-icon {
+  margin: auto 0;
+
+  &:hover svg {
+    cursor: pointer;
+    & circle {
+      fill: #9c9c9c;
+    }
+  }
+
+  &:active svg {
+    & circle {
+      fill: #cab2b2;
+    }
+
+    & path {
+      fill: #c42222;
+    }
+  }
+}
+
 .product-preview {
   display: flex;
   column-gap: 0.75em;
-  // height: fit-content;
+  position: relative;
 
   &__counter {
     display: flex;
