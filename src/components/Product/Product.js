@@ -75,10 +75,9 @@ class Product extends Component {
           <ul className="product-description__btns">
             {
               attributes?.map((item, index) => (
-                <li>
+                <li key={index}>
                   {item.name}
                   <p
-                    key={index}
                     style={item.type === 'swatch' ? { backgroundColor: item.value } : null}
                     className={isCart ? 'product-description__size--title'
                       : 'product-description__size--title--dropdown'}>
@@ -96,10 +95,10 @@ class Product extends Component {
               className="product-preview__counter--btn"
               onClick={this.handleCounterClick}>
               <svg className={isCart ? '' : 'counter-btn__dropdown'} width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.5 15V30" stroke="#1D1F22" stroke-linecap="round"
-                  stroke-linejoin="round" />
-                <path d="M15 22.5H30" stroke="#1D1F22" stroke-linecap="round"
-                  stroke-linejoin="round" />
+                <path d="M22.5 15V30" stroke="#1D1F22" strokeLinecap="round"
+                  strokeLinejoin="round" />
+                <path d="M15 22.5H30" stroke="#1D1F22" strokeLinecap="round"
+                  strokeLinejoin="round" />
                 <rect x="0.5" y="0.5" width="44" height="44" stroke="#1D1F22" />
               </svg>
             </button>
@@ -112,8 +111,8 @@ class Product extends Component {
               className="product-preview__counter--btn"
               onClick={this.handleCounterClick}>
               <svg className={isCart ? '' : 'counter-btn__dropdown'} width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 22.5H30" stroke="#1D1F22" stroke-linecap="round"
-                  stroke-linejoin="round" />
+                <path d="M15 22.5H30" stroke="#1D1F22" strokeLinecap="round"
+                  strokeLinejoin="round" />
                 <rect x="0.5" y="0.5" width="44" height="44" stroke="#1D1F22" />
               </svg>
             </button>
@@ -125,7 +124,7 @@ class Product extends Component {
             27.5156 25.7969 27.9844 25.3906 28.3906C24.9844 28.7969 24.5156 29
             23.9844 29H16.0156C15.4844 29 15.0156 28.7969 14.6094 28.3906C14.2031
             27.9844 14 27.5156 14 26.9844Z" fill="#666666" />
-              <circle cx="20" cy="20" r="15" fill="#C4C4C4" fill-opacity="0.5" />
+              <circle cx="20" cy="20" r="15" fill="#C4C4C4" fillOpacity="0.5" />
             </svg>
           </div>
           <div className={isCart ? 'product-preview__figure' : 'product-preview__figure--dropdown'}>

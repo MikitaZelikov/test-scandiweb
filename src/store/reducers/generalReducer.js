@@ -30,7 +30,29 @@ export const commonSlice = createSlice({
     },
     addProductToCart: (state, action) => {
       const duplState = state;
-      duplState.cart.push(action.payload);
+      const currentCart = state.cart;
+      if (currentCart.length !== 0) {
+        const selectedProdAttributes = action.payload.attributes;
+        const identicalNameProds = currentCart.filter((item) => item.name === action.payload.name);
+        let identicalProds;
+        if (identicalNameProds) {
+          identicalProds = identicalNameProds.find((prod) => {
+            const res = prod.attributes.reduce(
+              (prevValue, attr, index) => {
+                if (attr.value === selectedProdAttributes[index].value) return prevValue + 1;
+                return prevValue + 0;
+              }, 0);
+            return res === prod.attributes.length ? prod : false;
+          });
+        }
+        if (identicalProds) {
+          identicalProds.amount += 1;
+          const indexIdenticalProds = currentCart.findIndex((elem) => elem.additionalId
+            === identicalProds.additionalId);
+          currentCart.splice(indexIdenticalProds, 1, identicalProds);
+          duplState.cart = currentCart;
+        } else duplState.cart.push(action.payload);
+      } else duplState.cart.push(action.payload);
     },
     setProductAmount: (state, action) => {
       const duplState = state;
