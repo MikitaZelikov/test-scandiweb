@@ -18,16 +18,14 @@ class DescriptionPage extends Component {
   };
 
   handleClickAdd = (state, e) => {
-    const { selectedAttributes, product, isWarningMessage } = this.state;
+    const { selectedAttributes, product } = this.state;
     const isDisabledAddBtn = Object.keys(selectedAttributes)?.length !== product.attributes.length;
 
-    if (!isDisabledAddBtn || !isWarningMessage) {
+    while (isDisabledAddBtn) {
       this.setState((prevState) => ({
         ...prevState,
-        isWarningMessage: !prevState.isWarningMessage,
+        isWarningMessage: true,
       }));
-    }
-    if (isDisabledAddBtn) {
       e.preventDefault();
       return;
     }
