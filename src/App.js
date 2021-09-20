@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import './App.scss';
 import Routers from './routers/Routers';
 import { loadInitData } from './store/reducers/generalReducer';
 

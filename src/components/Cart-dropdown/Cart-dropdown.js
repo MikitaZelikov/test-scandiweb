@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
 import cart from '../../assets/icons/EmptyCart.svg';
-import Product from '../Product/Product';
+import CartProduct from '../Cart-product/Cart-product';
 import { toggleDropdownCart } from '../../store/reducers/generalReducer';
-import './cartDropdown.scss';
+import './cart-dropdown.scss';
 
 class CartDropdown extends Component {
   constructor() {
@@ -27,11 +27,11 @@ class CartDropdown extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.handleDocumentClick);
+    document.addEventListener('mousedown', this.handleDocumentClick);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleDocumentClick);
+    document.removeEventListener('mousedown', this.handleDocumentClick);
   }
 
   render() {
@@ -66,7 +66,7 @@ class CartDropdown extends Component {
               <ul className="cart-dropdown__list">
                 {
                   currentCart?.map((item, index) => (
-                    <Product key={index} product={item} localPath={localPath}/>
+                    <CartProduct key={index} product={item} localPath={localPath}/>
                   ))
                 }
               </ul>

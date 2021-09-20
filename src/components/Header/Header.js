@@ -3,18 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './header.scss';
-import CurrenciesDropdown from '../CurrenciesDropdown/CurrenciesDropdown';
-import CartDropdown from '../CartDropdown/CartDropdown';
+import CurrenciesDropdown from '../Currencies-dropdown/Currencies-dropdown';
+import CartDropdown from '../Cart-dropdown/Cart-dropdown';
 import Tab from '../Tab/Tab';
 import aLogo from '../../assets/icons/Group.svg';
 
 class Header extends Component {
   state = {
     isOpenedCart: false,
-  };
-
-  hideDropdownCurrencies = () => {
-    this.setState({ isOpened: false });
   };
 
   render() {

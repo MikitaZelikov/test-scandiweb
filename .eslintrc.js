@@ -27,7 +27,7 @@ module.exports = {
     'function-paren-newline': 'off', // Несовместимо с prettier
     'no-plusplus': 'off',
     'space-before-function-paren': 0, // Несовместимо с prettier
-    'max-len': ['error', 100, 2, { ignoreUrls: true }], // airbnb позволяет пограничные случаи
+    'max-len': ['error', 120, 2, { ignoreUrls: true }], // airbnb позволяет пограничные случаи
     'no-console': 'error', // airbnb использует предупреждение
     'no-alert': 'error', // airbnb использует предупреждение
     'react/require-default-props': 'off', // airbnb использует уведомление об ошибке
@@ -44,5 +44,6 @@ module.exports = {
     'no-debugger': 'off',
     'no-unused-expressions': ['error', { allowShortCircuit: false }],
     'class-methods-use-this': 'off',
+    'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['state'] }],
   },
 };

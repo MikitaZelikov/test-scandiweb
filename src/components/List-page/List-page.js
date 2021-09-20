@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import './list-page.scss';
 import Header from '../Header/Header';
-import Element from '../Element/Element';
+import ListProduct from '../List-product/List-product';
 import { getProducts } from '../../api/api-graphql';
 
 class ListPage extends Component {
@@ -47,7 +47,7 @@ class ListPage extends Component {
           <div className="container__list">
             {
               products?.map((item, index) => (
-              <Element
+              <ListProduct
                 key={index}
                 id={item.id}
                 inStock={item.inStock}
@@ -67,6 +67,7 @@ class ListPage extends Component {
 function mapStateToProps(state) {
   return {
     category: state.productsData.activeCategory,
+    isOpened: state.productsData.dropdownCartIsOpened,
   };
 }
 

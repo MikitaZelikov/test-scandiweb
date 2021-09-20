@@ -21,15 +21,12 @@ export const commonSlice = createSlice({
   initialState,
   reducers: {
     setCategory: (state, action) => {
-      const duplState = state;
-      duplState.activeCategory = action.payload;
+      state.activeCategory = action.payload;
     },
     setCurrency: (state, action) => {
-      const duplState = state;
-      duplState.activeCurrency = action.payload;
+      state.activeCurrency = action.payload;
     },
     addProductToCart: (state, action) => {
-      const duplState = state;
       const currentCart = state.cart;
       if (currentCart.length !== 0) {
         const selectedProdAttributes = action.payload.attributes;
@@ -50,41 +47,41 @@ export const commonSlice = createSlice({
           const indexIdenticalProds = currentCart.findIndex((elem) => elem.additionalId
             === identicalProds.additionalId);
           currentCart.splice(indexIdenticalProds, 1, identicalProds);
-          duplState.cart = currentCart;
-        } else duplState.cart.push(action.payload);
-      } else duplState.cart.push(action.payload);
+          state.cart = currentCart;
+        } else {
+          state.cart.push(action.payload);
+        }
+      } else {
+        state.cart.push(action.payload);
+      }
     },
     setProductAmount: (state, action) => {
-      const duplState = state;
       const currentCart = state.cart;
       const { amount, id } = action.payload;
       const neededProduct = currentCart.find((item) => item.additionalId === id);
       const indexNeededProduct = currentCart.findIndex((item) => item.additionalId === id);
       neededProduct.amount = amount;
       currentCart.splice(indexNeededProduct, 1, neededProduct);
-      duplState.cart = currentCart;
+      state.cart = currentCart;
     },
     toggleDropdownCart: (state) => {
-      const duplState = state;
-      duplState.dropdownCartIsOpened = !duplState.dropdownCartIsOpened;
+      state.dropdownCartIsOpened = !state.dropdownCartIsOpened;
     },
     deleteProductFromCart: (state, action) => {
-      const duplState = state;
       const currentCart = state.cart;
       const indexDelProduct = currentCart.findIndex((item) => item.additionalId === action.payload);
       currentCart.splice(indexDelProduct, 1);
-      duplState.cart = currentCart;
+      state.cart = currentCart;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loadInitData.fulfilled, (state, action) => {
-        const duplState = state;
-        duplState.allCategories = action.payload.categories;
-        duplState.allCurrencies = action.payload.currencies;
-        duplState.activeCategory = duplState.allCategories[0].name;
-        duplState.activeCurrency = duplState.allCurrencies[0];
-        duplState.initialDataIsLoading = false;
+        state.allCategories = action.payload.categories;
+        state.allCurrencies = action.payload.currencies;
+        state.activeCategory = state.allCategories[0].name;
+        state.activeCurrency = state.allCurrencies[0];
+        state.initialDataIsLoading = false;
       });
   },
 });

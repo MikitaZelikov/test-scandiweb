@@ -1,4 +1,4 @@
-.product {
+.list-product {
   padding: 1em;
 
   &:hover {
@@ -25,7 +25,7 @@
       align-items: center;
     }
 
-    &:hover .product__info--cart svg {
+    &:hover .list-product__info--cart svg {
       display: block;
     }
 
@@ -57,7 +57,7 @@
         left: -11px;
 
         &:hover g circle {
-            fill: #7dcf95;
+          fill: #7dcf95;
         }
 
         &:active g circle {

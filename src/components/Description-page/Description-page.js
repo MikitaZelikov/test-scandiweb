@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { nanoid } from 'nanoid';
 
 import './description-page.scss';
@@ -21,7 +20,7 @@ class DescriptionPage extends Component {
     const { selectedAttributes, product } = this.state;
     const isDisabledAddBtn = Object.keys(selectedAttributes)?.length !== product.attributes.length;
 
-    while (isDisabledAddBtn) {
+    if (isDisabledAddBtn) {
       this.setState((prevState) => ({
         ...prevState,
         isWarningMessage: true,
@@ -168,6 +167,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   currency: state.productsData.activeCurrency,
   cart: state.productsData.cart,
+  isOpened: state.productsData.dropdownCartIsOpened,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DescriptionPage);

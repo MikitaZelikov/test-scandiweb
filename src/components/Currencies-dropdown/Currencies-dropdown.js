@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
-import './currenciesDropdown.scss';
+import './currencies-dropdown.scss';
 import { setCurrency } from '../../store/reducers/generalReducer';
 import vectorDown from '../../assets/icons/VectorDown.svg';
 import vectorUp from '../../assets/icons/VectorUp.svg';

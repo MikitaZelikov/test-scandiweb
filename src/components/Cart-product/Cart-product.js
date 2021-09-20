@@ -2,10 +2,10 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
-import './product.scss';
+import './cart-product.scss';
 import { setProductAmount, deleteProductFromCart } from '../../store/reducers/generalReducer';
 
-class Product extends Component {
+class CartProduct extends Component {
   state = {
     counterImg: 0,
   }
@@ -160,4 +160,4 @@ const mapDispatchToProps = (dispatch) => ({
   deleteProduct: (id) => dispatch(deleteProductFromCart(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default connect(mapStateToProps, mapDispatchToProps)(CartProduct);

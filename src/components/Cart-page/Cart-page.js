@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import './cart-page.scss';
 import Header from '../Header/Header';
-import Product from '../Product/Product';
+import CartProduct from '../Cart-product/Cart-product';
 
 class Cart extends Component {
   render() {
@@ -18,7 +18,7 @@ class Cart extends Component {
           <ul className="cart-container__list">
             {
               cart?.map((item, index) => (
-                <Product key={index} product={item} localPath={localPath}/>
+                <CartProduct key={index} product={item} localPath={localPath}/>
               ))
             }
           </ul>

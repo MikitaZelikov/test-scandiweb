@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
-import './element.scss';
+import './list-product.scss';
 
-class Element extends Component {
+class ListProduct extends Component {
   handleCartClick = () => {
   };
 
@@ -15,12 +15,12 @@ class Element extends Component {
     const amount = productPrice[0].amount;
 
     return (
-      <article className="product" style={!inStock ? { opacity: 0.5 } : null}>
-        <Link to={`/product/${id}`} className="product__link">
+      <article className="list-product" style={!inStock ? { opacity: 0.5 } : null}>
+        <Link to={`/product/${id}`} className="list-product__link">
           {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
-          <img src={urlImg} alt="product" className="product__img" />
-          <div className="product__info">
-            <span className="product__info--cart" hidden={!inStock} onClick={this.handleCartClick}>
+          <img src={urlImg} alt="product" className="list-product__img" />
+          <div className="list-product__info">
+            <span className="list-product__info--cart" hidden={!inStock} onClick={this.handleCartClick}>
               <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d)">
                   <circle cx="37" cy="33" r="26" fill="#5ECE7B" />
@@ -69,8 +69,8 @@ class Element extends Component {
                 </defs>
               </svg>
             </span>
-            <p className="product__info--name">{name}</p>
-            <p className="product__info--price">
+            <p className="list-product__info--name">{name}</p>
+            <p className="list-product__info--price">
               {`${getSymbolFromCurrency(activeCurrency)}${inStock ? amount : '--'}`}
             </p>
           </div>
@@ -86,4 +86,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Element);
+export default connect(mapStateToProps)(ListProduct);
