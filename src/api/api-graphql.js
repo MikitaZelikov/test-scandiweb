@@ -71,6 +71,6 @@ async function post(body) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   };
-  const response = await fetch('http://localhost:4000/', options);
+  const response = await fetch('https://zelaniki-products-graphql.azurewebsites.net/', options);
   return response.json();
 }
