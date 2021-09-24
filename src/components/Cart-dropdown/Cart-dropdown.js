@@ -9,8 +9,8 @@ import { toggleDropdownCart } from '../../store/reducers/generalReducer';
 import './cart-dropdown.scss';
 
 class CartDropdown extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
   }
 
@@ -26,6 +26,12 @@ class CartDropdown extends Component {
     }
   }
 
+  getTotal = (count, prod) => {
+    const currentPrice = prod.prices.find((price) => price.currency === this.props.activeCurrency);
+    const total = count + currentPrice.amount * prod.amount;
+    return Math.round(total * 100) / 100;
+  };
+
   componentDidMount() {
     document.addEventListener('mousedown', this.handleDocumentClick);
   }
@@ -38,15 +44,7 @@ class CartDropdown extends Component {
     const currentCart = this.props.cart;
     const localPath = window.location.pathname;
     const activeCurrency = this.props.activeCurrency;
-    const getTotal = (count, prod) => {
-      const currentPrice = prod.prices.find((price) => price.currency === activeCurrency);
-      const total = count + currentPrice.amount * prod.amount;
-      return Math.round(total * 100) / 100;
-    };
-    const totalCount = currentCart.reduce((count, prod) => {
-      const total = prod.amount + count;
-      return total;
-    }, 0);
+    const totalCount = currentCart.reduce((count, prod) => prod.amount + count, 0);
 
     return (
       <section id="cart-dropdown" className="cart-dropdown">
@@ -54,7 +52,7 @@ class CartDropdown extends Component {
           <img src={cart} alt="cart" />
           {
             localPath !== '/cart' ? (
-            <span className="cart-dropdown__counter-icon">{totalCount}</span>) : null
+              <span className="cart-dropdown__counter-icon">{totalCount}</span>) : null
           }
         </div>
         {
@@ -66,14 +64,14 @@ class CartDropdown extends Component {
               <ul className="cart-dropdown__list">
                 {
                   currentCart?.map((item, index) => (
-                    <CartProduct key={index} product={item} localPath={localPath}/>
+                    <CartProduct key={index} product={item} localPath={localPath} />
                   ))
                 }
               </ul>
               <div className="cart-dropdown__total cart-dropdown-total">
                 <p className="cart-dropdown-total__title">Total</p>
                 <p className="cart-dropdown-total__amount">
-                  {`${getSymbolFromCurrency(activeCurrency)}${currentCart?.reduce(getTotal, 0)}`}
+                  {`${getSymbolFromCurrency(activeCurrency)}${currentCart?.reduce(this.getTotal, 0)}`}
                 </p>
               </div>
               <div className="cart-dropdown__action-block action-block">

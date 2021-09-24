@@ -58,6 +58,7 @@ class CartProduct extends Component {
     const activeCurrency = this.props.activeCurrency;
     const price = prices.filter((item) => (item.currency === activeCurrency))[0].amount;
     const isCart = this.props.localPath === '/cart';
+    const isOnlyOneImg = gallery.length === 1;
 
     return (
       <li className={isCart ? 'product-item' : 'product-item product-item--dropdown'}>
@@ -133,13 +134,13 @@ class CartProduct extends Component {
               <button id="slider-prev-btn"
                 className="product-preview__slider--btn"
                 onClick={this.handleSliderClick}
-                hidden={!isCart}>
+                hidden={!isCart || isOnlyOneImg}>
                 {'<'}
               </button>
               <button id="slider-next-btn"
                 className="product-preview__slider--btn"
                 onClick={this.handleSliderClick}
-                hidden={!isCart}>
+                hidden={!isCart || isOnlyOneImg}>
                 {'>'}
               </button>
             </div>

@@ -27,6 +27,7 @@ class Header extends Component {
               />
             ))
           }
+          <Tab text={'all'}/>
         </nav>
         <div className="header__logo header-logo">
           <Link to="/" className="header-logo__link">

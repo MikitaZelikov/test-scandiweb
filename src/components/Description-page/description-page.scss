@@ -1,5 +1,5 @@
 .description-container {
-  padding: 5.5em 15vw 0 7vw;
+  padding: 5.5em 15vw 2.5em 7vw;
   display: grid;
   grid-template-areas:
     "gallery figure description"
@@ -15,6 +15,10 @@
     padding: 0;
     width: fit-content;
     overflow: inherit;
+
+    &--out-of-stock {
+      opacity: 0.5;
+    }
 
     &__photo {
       padding-bottom: 2.5em;
@@ -35,6 +39,10 @@
     grid-area: figure;
     margin: 0;
     position: relative;
+
+    &--out-of-stock {
+      opacity: 0.5;
+    }
 
     .out-of-stock {
       position: absolute;
@@ -134,8 +142,11 @@
       font-family: 'Roboto';
       line-height: 160%;
       font-weight: 400;
-      max-height: 15em;
-      overflow: auto;
+
+      & ul {
+        padding-inline: 0;
+        list-style-type: square;
+      }
     }
 
     &__warning {

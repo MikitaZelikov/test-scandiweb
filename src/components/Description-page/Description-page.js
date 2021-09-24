@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { nanoid } from 'nanoid';
+import DOMPurify from 'dompurify';
 
 import './description-page.scss';
 import Header from '../Header/Header';
@@ -67,6 +68,7 @@ class DescriptionPage extends Component {
     const currentAmount = product?.prices.find((item) => item.currency === currency).amount;
     const productAttributes = product?.attributes;
     const isDisabledAddBtn = Object.keys(selectedAttributes)?.length !== productAttributes?.length;
+    const sanitizer = DOMPurify.sanitize;
 
     return product ? (
       <div className="wrapper">
@@ -74,9 +76,8 @@ class DescriptionPage extends Component {
         <div className="overlay" hidden={!isOpened}></div>
         <main className="description-container">
           <ul
-            className="product-gallery"
+            className={inStock ? 'product-gallery' : 'product-gallery product-gallery--out-of-stock'}
             id="product-gallery"
-            style={!inStock ? { opacity: 0.5 } : null}
           >
             {
               product.gallery.map((item, index) => (
@@ -93,7 +94,7 @@ class DescriptionPage extends Component {
           <figure
             className="product-figure"
             id="product-figure"
-            style={!inStock ? { opacity: 0.5 } : null}
+            className={inStock ? 'product-figure' : 'product-figure product-figure--out-of-stock'}
           >
             {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
             <img src={mainPhoto || product.gallery[0]} alt="main photo" />
@@ -139,7 +140,7 @@ class DescriptionPage extends Component {
             <div className="product-description__price">
               <p className="product-description__price--title">PRICE:</p>
               <p className="product-description__price--amount">
-                {`${getSymbolFromCurrency(currency)}${inStock ? currentAmount : '--'}`}
+                {`${getSymbolFromCurrency(currency)}${currentAmount}`}
               </p>
             </div>
             <button
@@ -151,7 +152,7 @@ class DescriptionPage extends Component {
             </button>
             <p
               className="product-description__overview"
-              dangerouslySetInnerHTML={{ __html: product.description }}
+              dangerouslySetInnerHTML={{ __html: sanitizer(product.description) }}
             />
           </article>
         </main>

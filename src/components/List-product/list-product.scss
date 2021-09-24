@@ -1,6 +1,10 @@
 .list-product {
   padding: 1em;
 
+  &--out-of-stock {
+    opacity: 0.5;
+  }
+
   &:hover {
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
   }

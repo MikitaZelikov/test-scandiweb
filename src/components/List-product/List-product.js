@@ -10,12 +10,12 @@ class ListProduct extends Component {
   };
 
   render() {
-    const { id, activeCurrency, urlImg, name, prices, inStock } = this.props;
+    const { id, activeCurrency, urlImg, name, prices, inStock, brand } = this.props;
     const productPrice = prices.filter((item) => item.currency === activeCurrency);
     const amount = productPrice[0].amount;
 
     return (
-      <article className="list-product" style={!inStock ? { opacity: 0.5 } : null}>
+      <article className={inStock ? 'list-product' : 'list-product list-product--out-of-stock'}>
         <Link to={`/product/${id}`} className="list-product__link">
           {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
           <img src={urlImg} alt="product" className="list-product__img" />
@@ -69,9 +69,9 @@ class ListProduct extends Component {
                 </defs>
               </svg>
             </span>
-            <p className="list-product__info--name">{name}</p>
+            <p className="list-product__info--name">{`${brand} ${name}`}</p>
             <p className="list-product__info--price">
-              {`${getSymbolFromCurrency(activeCurrency)}${inStock ? amount : '--'}`}
+              {`${getSymbolFromCurrency(activeCurrency)}${amount}`}
             </p>
           </div>
         </Link>

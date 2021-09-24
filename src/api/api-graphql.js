@@ -11,6 +11,29 @@ export async function getInitData() {
   return resp.data;
 }
 
+export async function getMixedProducts() {
+  const q = {
+    query: `query getMixedProducts {
+      categories {
+        name
+        products {
+          id
+          name
+          inStock
+          gallery
+          prices {
+            currency
+            amount
+          }
+          brand
+        }
+      }
+    }`,
+  };
+  const resp = await post(q);
+  return resp.data?.categories?.reduce((res, item) => res.concat(item.products), []);
+}
+
 export async function getProducts(category) {
   const q = {
     query: `query getProducts($category: CategoryInput) {
