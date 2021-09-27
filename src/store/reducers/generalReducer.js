@@ -9,7 +9,7 @@ const initialState = {
   allCurrencies: [],
   activeCurrency: null,
   cart: [],
-  dropdownCartIsOpened: false,
+  isOverlay: false,
 };
 
 export const loadInitData = createAsyncThunk(
@@ -64,8 +64,9 @@ export const commonSlice = createSlice({
       currentCart.splice(indexNeededProduct, 1, neededProduct);
       state.cart = currentCart;
     },
-    toggleDropdownCart: (state) => {
-      state.dropdownCartIsOpened = !state.dropdownCartIsOpened;
+    toggleOverlay: (state) => {
+      debugger;
+      state.isOverlay = !state.isOverlay;
     },
     deleteProductFromCart: (state, action) => {
       const currentCart = state.cart;
@@ -91,7 +92,7 @@ export const {
   setCurrency,
   addProductToCart,
   setProductAmount,
-  toggleDropdownCart,
+  toggleOverlay,
   deleteProductFromCart,
 } = commonSlice.actions;
 export default commonSlice.reducer;

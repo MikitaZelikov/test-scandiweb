@@ -59,7 +59,6 @@
   }
 
   .product-description {
-    grid-area: description;
     display: flex;
     flex-direction: column;
     row-gap: 2.5em;
@@ -75,7 +74,12 @@
       font-weight: 400;
     }
 
-    &__size--title,
+    &__info-block {
+      display: flex;
+      flex-direction: column;
+      row-gap: 2.5em;
+    }
+
     &__price--title {
       font-family: "Roboto Condensed", sans-serif;
       font-size: 1.125rem;
@@ -83,63 +87,8 @@
       margin: 0 0 0.5em;
     }
 
-    &__size--btns {
-      display: flex;
-      justify-content: space-between;
-      font-family: "Source Sans Pro", sans-serif;
-      font-weight: 400;
-      padding: 0;
-      column-gap: 0.75em;
-
-      & li {
-        border: 1px solid #1d1f22;
-        padding: 0.875rem 0;
-        text-align: center;
-        width: -webkit-fill-available;
-        box-sizing: border-box;
-
-        &:hover {
-          color: #ffffff;
-          background-color: #1d1f22;
-          cursor: pointer;
-        }
-
-        &:active {
-          opacity: 0.85;
-        }
-      }
-
-      .selected {
-        color: #ffffff;
-        background-color: #1d1f22;
-        outline: 2px solid #1d1f22;
-      }
-    }
-
-    &__price--amount {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    &__add-btn {
-      font-weight: 600;
-      padding: 1em 0;
-      background-color: #5ECE7B;
-      color: #ffffff;
-      border: none;
-
-      &:hover {
-        cursor: pointer;
-        background-color: #7dcf95;
-      }
-
-      &:active {
-        background-color: #46be66;
-      }
-    }
-
     &__overview {
-      font-family: 'Roboto';
+      font-family: "Roboto";
       line-height: 160%;
       font-weight: 400;
 

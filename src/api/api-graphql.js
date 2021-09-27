@@ -21,6 +21,15 @@ export async function getMixedProducts() {
           name
           inStock
           gallery
+          attributes {
+            id
+            name
+            type
+            items {
+              id
+              value
+            }
+          }
           prices {
             currency
             amount
@@ -43,6 +52,15 @@ export async function getProducts(category) {
           name
           inStock
           gallery
+          attributes {
+            id
+            name
+            type
+            items {
+              id
+              value
+            }
+          }
           prices {
             currency
             amount

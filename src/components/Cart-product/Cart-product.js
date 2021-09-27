@@ -80,8 +80,8 @@ class CartProduct extends Component {
                   {item.name}
                   <p
                     style={item.type === 'swatch' ? { backgroundColor: item.value } : null}
-                    className={isCart ? 'product-description__size--title'
-                      : 'product-description__size--title--dropdown'}>
+                    className={isCart ? 'product-description__attribute--title'
+                      : 'product-description__attribute--title--dropdown'}>
                     {item.type === 'swatch' ? '' : item.value}
                   </p>
                 </li>

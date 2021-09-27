@@ -6,11 +6,8 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 import './list-product.scss';
 
 class ListProduct extends Component {
-  handleCartClick = () => {
-  };
-
   render() {
-    const { id, activeCurrency, urlImg, name, prices, inStock, brand } = this.props;
+    const { id, activeCurrency, urlImg, name, prices, inStock, brand, handleCartClick } = this.props;
     const productPrice = prices.filter((item) => item.currency === activeCurrency);
     const amount = productPrice[0].amount;
 
@@ -20,7 +17,7 @@ class ListProduct extends Component {
           {inStock || <p className="out-of-stock">OUT OF STOCK</p>}
           <img src={urlImg} alt="product" className="list-product__img" />
           <div className="list-product__info">
-            <span className="list-product__info--cart" hidden={!inStock} onClick={this.handleCartClick}>
+            <span className="list-product__info--cart" hidden={!inStock} onClick={(e) => handleCartClick(id, e)}>
               <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d)">
                   <circle cx="37" cy="33" r="26" fill="#5ECE7B" />
@@ -80,10 +77,8 @@ class ListProduct extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    activeCurrency: state.productsData.activeCurrency,
-  };
-}
+const mapStateToProps = (state) => ({
+  activeCurrency: state.productsData.activeCurrency,
+});
 
 export default connect(mapStateToProps)(ListProduct);

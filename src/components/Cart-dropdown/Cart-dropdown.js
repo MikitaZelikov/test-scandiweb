@@ -5,7 +5,7 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 
 import cart from '../../assets/icons/EmptyCart.svg';
 import CartProduct from '../Cart-product/Cart-product';
-import { toggleDropdownCart } from '../../store/reducers/generalReducer';
+import { toggleOverlay } from '../../store/reducers/generalReducer';
 import './cart-dropdown.scss';
 
 class CartDropdown extends Component {
@@ -14,15 +14,21 @@ class CartDropdown extends Component {
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
   }
 
-  handleDropdownCartClick = () => {
-    this.props.toggleDropdown();
+  state = {
+    isOpened: false,
+  };
+
+  handleDropdownCartClick = (e) => {
+    this.setState((prevState) => ({ isOpened: !prevState.isOpened }));
+    this.props.toggleOverlay();
+    e.preventDefault();
   };
 
   handleDocumentClick(e) {
-    const { toggleDropdown, dropdownCartIsOpened } = this.props;
-    if (e.target.closest('#cart-dropdown')) return;
-    if (dropdownCartIsOpened) {
-      toggleDropdown();
+    if (this.state.isOpened) {
+      if (e.target.closest('#cart-dropdown')) return;
+      this.setState({ isOpened: false });
+      this.props.toggleOverlay();
     }
   }
 
@@ -56,7 +62,7 @@ class CartDropdown extends Component {
           }
         </div>
         {
-          this.props.dropdownCartIsOpened && localPath !== '/cart' ? (
+          this.state.isOpened && localPath !== '/cart' ? (
             <div className="cart-dropdown__menu">
               <h1 className="cart-dropdown__title">
                 <span><b>My Bag,</b></span>{` ${totalCount} items`}
@@ -75,7 +81,11 @@ class CartDropdown extends Component {
                 </p>
               </div>
               <div className="cart-dropdown__action-block action-block">
-                <Link to="/cart" className="action-block__btn action-block__btn--view">
+                <Link
+                to="/cart"
+                className="action-block__btn action-block__btn--view"
+                onClick={this.props.toggleOverlay}
+                >
                   VIEW BAG
                 </Link>
                 <Link to="#" className="action-block__btn action-block__btn--buy">CHECK OUT</Link>
@@ -90,11 +100,10 @@ class CartDropdown extends Component {
 const mapStateToProps = (state) => ({
   cart: state.productsData.cart,
   activeCurrency: state.productsData.activeCurrency,
-  dropdownCartIsOpened: state.productsData.dropdownCartIsOpened,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleDropdown: () => dispatch(toggleDropdownCart()),
+  toggleOverlay: () => dispatch(toggleOverlay()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartDropdown);

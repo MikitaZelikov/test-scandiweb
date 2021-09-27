@@ -4,20 +4,42 @@ import { connect } from 'react-redux';
 import './list-page.scss';
 import Header from '../Header/Header';
 import ListProduct from '../List-product/List-product';
+import ProductAttribute from '../Product-attribute/Product-attribute';
 import { getProducts, getMixedProducts } from '../../api/api-graphql';
+import { toggleOverlay } from '../../store/reducers/generalReducer';
 
 class ListPage extends Component {
+  constructor() {
+    super();
+    this.handleDocumentClick = this.handleDocumentClick.bind(this);
+  }
+
   state = {
     products: [],
+    addedProduct: null,
+    popupIsOpened: false,
+  };
+
+  handleCartClick = (id, e) => {
+    const addedProd = this.state.products.find((item) => item.id === id);
+    this.setState((prevState) => ({
+      ...prevState,
+      popupIsOpened: !prevState.popupIsOpened,
+      addedProduct: addedProd,
+    }));
+    this.props.toggleOverlay();
+    e.preventDefault();
   }
 
-  componentDidMount() {
-    this.fetchProducts();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.category !== prevProps.category) {
-      this.fetchProducts();
+  handleDocumentClick(e) {
+    if (this.state.popupIsOpened) {
+      if (e.target.closest('.list-product__info--cart')
+      || e.target.closest('.product-description__info-block--popup')) return;
+      this.setState((prevState) => ({
+        ...prevState,
+        popupIsOpened: false,
+      }));
+      this.props.toggleOverlay();
     }
   }
 
@@ -39,24 +61,52 @@ class ListPage extends Component {
     }));
   }
 
+  componentDidMount() {
+    document.addEventListener('click', this.handleDocumentClick);
+    this.fetchProducts();
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.category !== prevProps.category) {
+      this.fetchProducts();
+    }
+  }
+
   render() {
-    const { category, isOpened } = this.props;
-    const { products } = this.state;
+    const { category, isOverlay } = this.props;
+    const { products, addedProduct, popupIsOpened } = this.state;
+    const productAttributes = addedProduct?.attributes;
 
     return (
       <div className="wrapper">
-        <Header/>
-        <div className="overlay" hidden={!isOpened}></div>
+        <Header />
+        <div className="overlay" hidden={!isOverlay}></div>
+        {
+          popupIsOpened ? (
+            productAttributes?.map((attr, idx) => (
+              <ProductAttribute
+                key={idx}
+                attribute={attr}
+                product={addedProduct}
+                popupIsOpened={popupIsOpened} />
+            ))
+          ) : null
+        }
         <section className="container">
           <h1>{category.toUpperCase()}</h1>
           <div className="container__list">
             {
               products?.map((item, index) => (
-              <ListProduct
-                key={index}
-                urlImg={item.gallery[0]}
-                { ...item }
-              />
+                <ListProduct
+                  key={index}
+                  urlImg={item.gallery[0]}
+                  handleCartClick={this.handleCartClick}
+                  {...item}
+                />
               ))
             }
           </div>
@@ -66,11 +116,13 @@ class ListPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    category: state.productsData.activeCategory,
-    isOpened: state.productsData.dropdownCartIsOpened,
-  };
-}
+const mapStateToProps = (state) => ({
+  category: state.productsData.activeCategory,
+  isOverlay: state.productsData.isOverlay,
+});
 
-export default connect(mapStateToProps)(ListPage);
+const mapDispatchToProps = (dispatch) => ({
+  toggleOverlay: () => dispatch(toggleOverlay()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListPage);

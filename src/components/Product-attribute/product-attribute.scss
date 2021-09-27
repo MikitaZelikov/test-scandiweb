@@ -1,0 +1,81 @@
+.product-description {
+  &__info-block--popup {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.5em;
+    position: fixed;
+    top: 30%;
+    left: 40%;
+    right: 40%;
+    z-index: 3;
+    border-radius: 5%;
+    background-color: #ffffff;
+    padding: 2em;
+  }
+
+  &__attribute--title {
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.5em;
+  }
+
+  &__attribute--btns {
+    display: flex;
+    justify-content: space-between;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 400;
+    padding: 0;
+    column-gap: 0.75em;
+
+    & li {
+      border: 1px solid #1d1f22;
+      padding: 0.875rem 0;
+      text-align: center;
+      width: -webkit-fill-available;
+      box-sizing: border-box;
+
+      &:hover {
+        color: #ffffff;
+        background-color: #1d1f22;
+        cursor: pointer;
+      }
+
+      &:active {
+        opacity: 0.85;
+      }
+    }
+
+    .selected {
+      color: #ffffff;
+      background-color: #1d1f22;
+      outline: 2px solid #1d1f22;
+    }
+  }
+
+  &__price--amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  &__add-btn {
+    font-weight: 600;
+    padding: 1em 0;
+    background-color: #5ece7b;
+    color: #ffffff;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #7dcf95;
+    }
+
+    &:active {
+      background-color: #46be66;
+    }
+  }
+
+  &__warning {
+    color: #c42222;
+  }
+}

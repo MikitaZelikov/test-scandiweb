@@ -9,10 +9,6 @@ import Tab from '../Tab/Tab';
 import aLogo from '../../assets/icons/Group.svg';
 
 class Header extends Component {
-  state = {
-    isOpenedCart: false,
-  };
-
   render() {
     const categories = this.props.allCategories;
 
@@ -27,7 +23,7 @@ class Header extends Component {
               />
             ))
           }
-          <Tab text={'all'}/>
+          <Tab text={'all'} />
         </nav>
         <div className="header__logo header-logo">
           <Link to="/" className="header-logo__link">
@@ -35,18 +31,16 @@ class Header extends Component {
           </Link>
         </div>
         <div className="header__selection header-selection">
-          <CurrenciesDropdown/>
-          <CartDropdown/>
+          <CurrenciesDropdown />
+          <CartDropdown />
         </div>
       </header>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    allCategories: state.productsData.allCategories,
-  };
-}
+const mapStateToProps = (state) => ({
+  allCategories: state.productsData.allCategories,
+});
 
 export default connect(mapStateToProps)(Header);
