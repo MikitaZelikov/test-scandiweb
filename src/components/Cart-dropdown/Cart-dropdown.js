@@ -54,7 +54,7 @@ class CartDropdown extends Component {
 
     return (
       <section id="cart-dropdown" className="cart-dropdown">
-        <div to="/cart" className="cart-dropdown__link" onClick={this.handleDropdownCartClick}>
+        <div className="cart-dropdown__link" onClick={this.handleDropdownCartClick}>
           <img src={cart} alt="cart" />
           {
             localPath !== '/cart' ? (
@@ -82,9 +82,9 @@ class CartDropdown extends Component {
               </div>
               <div className="cart-dropdown__action-block action-block">
                 <Link
-                to="/cart"
-                className="action-block__btn action-block__btn--view"
-                onClick={this.props.toggleOverlay}
+                  to="/cart"
+                  className="action-block__btn action-block__btn--view"
+                  onClick={this.props.toggleOverlay}
                 >
                   VIEW BAG
                 </Link>

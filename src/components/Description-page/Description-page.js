@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 
 import './description-page.scss';
 import Header from '../Header/Header';
-import ProductAttribute from '../Product-attribute/Product-attribute';
+import ProductAttributes from '../Product-attributes/Product-attributes';
 import { getProduct } from '../../api/api-graphql';
 
 class DescriptionPage extends Component {
@@ -40,22 +40,7 @@ class DescriptionPage extends Component {
         <Header />
         <div className="overlay" hidden={!isOverlay}></div>
         <main className="description-container">
-          <ul
-            className={inStock ? 'product-gallery' : 'product-gallery product-gallery--out-of-stock'}
-            id="product-gallery"
-          >
-            {
-              product.gallery.map((item, index) => (
-                <li
-                  key={index}
-                  className="product-gallery__photo"
-                  onClick={() => this.handleClickPhoto(item)}
-                >
-                  <img src={item} />
-                </li>
-              ))
-            }
-          </ul>
+          {this.renderGallery(inStock, product)}
           <figure
             className="product-figure"
             id="product-figure"
@@ -69,7 +54,7 @@ class DescriptionPage extends Component {
               <h1 className="product-description__heading--title">{product.brand}</h1>
               <p className="product-description__heading--desc">{product.name}</p>
             </div>
-            <ProductAttribute product={product} />
+            <ProductAttributes product={product} />
             <p
               className="product-description__overview"
               dangerouslySetInnerHTML={{ __html: sanitizer(product.description) }}
@@ -78,6 +63,27 @@ class DescriptionPage extends Component {
         </main>
       </div>
     ) : '';
+  }
+
+  renderGallery(inStock, product) {
+    return (
+      <ul
+        className={inStock ? 'product-gallery' : 'product-gallery product-gallery--out-of-stock'}
+        id="product-gallery"
+      >
+        {
+          product.gallery.map((item, index) => (
+            <li
+              key={index}
+              className="product-gallery__photo"
+              onClick={() => this.handleClickPhoto(item)}
+            >
+              <img src={item} />
+            </li>
+          ))
+        }
+      </ul>
+    );
   }
 }
 

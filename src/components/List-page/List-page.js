@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './list-page.scss';
 import Header from '../Header/Header';
 import ListProduct from '../List-product/List-product';
-import ProductAttribute from '../Product-attribute/Product-attribute';
+import ProductAttributes from '../Product-attributes/Product-attributes';
 import { getProducts, getMixedProducts } from '../../api/api-graphql';
 import { toggleOverlay } from '../../store/reducers/generalReducer';
 
@@ -34,7 +34,7 @@ class ListPage extends Component {
   handleDocumentClick(e) {
     if (this.state.popupIsOpened) {
       if (e.target.closest('.list-product__info--cart')
-      || e.target.closest('.product-description__info-block--popup')) return;
+        || e.target.closest('.product-description__info-block--popup')) return;
       this.setState((prevState) => ({
         ...prevState,
         popupIsOpened: false,
@@ -79,7 +79,6 @@ class ListPage extends Component {
   render() {
     const { category, isOverlay } = this.props;
     const { products, addedProduct, popupIsOpened } = this.state;
-    const productAttributes = addedProduct?.attributes;
 
     return (
       <div className="wrapper">
@@ -87,13 +86,7 @@ class ListPage extends Component {
         <div className="overlay" hidden={!isOverlay}></div>
         {
           popupIsOpened ? (
-            productAttributes?.map((attr, idx) => (
-              <ProductAttribute
-                key={idx}
-                attribute={attr}
-                product={addedProduct}
-                popupIsOpened={popupIsOpened} />
-            ))
+            <ProductAttributes product={addedProduct} popupIsOpened={popupIsOpened} />
           ) : null
         }
         <section className="container">

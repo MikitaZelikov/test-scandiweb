@@ -15,6 +15,7 @@ class Header extends Component {
     return (
       <header className="header">
         <nav className="header__nav header-nav">
+          <Tab text={'all'} />
           {
             categories?.map((item, index) => (
               <Tab
@@ -23,7 +24,6 @@ class Header extends Component {
               />
             ))
           }
-          <Tab text={'all'} />
         </nav>
         <div className="header__logo header-logo">
           <Link to="/" className="header-logo__link">

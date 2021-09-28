@@ -65,7 +65,6 @@ export const commonSlice = createSlice({
       state.cart = currentCart;
     },
     toggleOverlay: (state) => {
-      debugger;
       state.isOverlay = !state.isOverlay;
     },
     deleteProductFromCart: (state, action) => {
@@ -80,7 +79,7 @@ export const commonSlice = createSlice({
       .addCase(loadInitData.fulfilled, (state, action) => {
         state.allCategories = action.payload.categories;
         state.allCurrencies = action.payload.currencies;
-        state.activeCategory = state.allCategories[0].name;
+        state.activeCategory = 'all';
         state.activeCurrency = state.allCurrencies[0];
         state.initialDataIsLoading = false;
       });
